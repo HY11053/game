@@ -42,6 +42,7 @@
                     <li @if(Request::getRequestUri()=='/admin/article/brands')class="active" @endif><a href="/admin/article/brands"><i class="fa fa-circle-o"></i> 品牌文档列表</a></li>
                     <li @if(Request::getRequestUri()=='/admin/brandarticle/ownership')class="active" @endif><a href="/admin/brandarticle/ownership"><i class="fa fa-circle-o"></i> 我发布的品牌</a></li>
                     <li @if(Request::getRequestUri()=='/admin/brandarticle/pendingaudit')class="active" @endif><a href="/admin/brandarticle/pendingaudit"><i class="fa fa-circle-o"></i> 待审核的品牌</a></li>
+                    <li @if(Request::getRequestUri()=='/admin/article/pedingbrands')class="active" @endif><a href="/admin/article/pedingbrands"><i class="fa fa-circle-o"></i> 待发布的品牌</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -104,7 +105,7 @@
                     <li @if(Request::getRequestUri()=='/admin/makesitemap')class="active"@endif><a href="/admin/makesitemap"><i class="fa fa-circle-o"></i> XML地图生成</a></li>
                     <li @if(Request::getRequestUri()=='/admin/phone')class="active"@endif><a href="/admin/phone"><i class="fa fa-circle-o"></i> 电话提交管理</a></li>
                     <li @if(Request::getRequestUri()=='/admin/makemsitemap')class="active"@endif><a href="/admin/makemsitemap"><i class="fa fa-circle-o"></i> 移动端地图生成</a></li>
-                    <li @if(Request::getRequestUri()=='/admin/baiduapplet/allurls')class="active"@endif><a href="/admin/baiduapplet/allurls"><i class="fa fa-circle-o"></i> 小程序地图生成</a></li>
+                    <li @if(Request::getRequestUri()=='/admin/linkresult')class="active"@endif><a href="/admin/linkresult"><i class="fa fa-circle-o"></i> 链接推送结果</a></li>
                     <li @if(Request::getRequestUri()=='/admin/brandtypelist')class="active"@endif><a href="/admin/brandtypelist"><i class="fa fa-circle-o"></i> 品牌类型列表</a></li>
                     <li @if(Request::getRequestUri()=='/admin/brandtypecreate')class="active"@endif><a href="/admin/brandtypecreate"><i class="fa fa-circle-o"></i> 品牌类型添加</a></li>
                     <li @if(Request::getRequestUri()=='/admin/importbrands')class="active"@endif><a href="/admin/importbrands"><i class="fa fa-circle-o"></i> 品牌数据导入</a></li>
@@ -132,17 +133,14 @@
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa  fa-cubes"></i> <span>美食二级域名</span>
+                    <i class="fa  fa-wechat"></i> <span>违禁词汇管理</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li @if(Request::getRequestUri()=='/admin/mscategory')class="active"@endif><a href="/admin/mscategory"><i class="fa fa-circle-o"></i> 美食栏目管理</a></li>
-                    <li @if(Request::getRequestUri()=='/admin/msarticle')class="active"@endif><a href="/admin/msarticle"><i class="fa fa-circle-o"></i> 美食文档列表</a></li>
-                    <li @if(Request::getRequestUri()=='/admin/msarticle/ownership')class="active"@endif><a href="/admin/msarticle/ownership"><i class="fa fa-circle-o"></i> 我发布的美食</a></li>
-                    <li @if(Request::getRequestUri()=='/admin/msarticle/pendingaudit')class="active"@endif><a href="/admin/msarticle/pendingaudit"><i class="fa fa-circle-o"></i> 待审核的美食</a></li>
-                    <li @if(Request::getRequestUri()=='/admin/msarticle/pedingpublished')class="active"@endif><a href="/admin/msarticle/pedingpublished"><i class="fa fa-circle-o"></i> 待发布的美食</a></li>
+                    <li @if(Request::getRequestUri()=='/admin/guarded_keywoeds')class="active"@endif><a href="/admin/guarded_keywoeds"><i class="fa fa-circle-o"></i> 违禁词列表</a></li>
+                    <li @if(Request::getRequestUri()=='/admin/guarded_edit_keywoeds')class="active"@endif><a href="/admin/guarded_edit_keywoeds"><i class="fa fa-circle-o"></i> 违禁词修改</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -158,17 +156,15 @@
                 </ul>
             </li>
             <li>
-                <a href="pages/widgets.html">
-                    <i class="fa fa-external-link"></i> <span>美食友情链接</span>
+                <a href="/admin/Atlas">
+                    <i class="fa fa-photo"></i> <span>图集内容管理</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+              <small class="label pull-right bg-red">3</small>
+              <small class="label pull-right bg-blue">17</small>
             </span>
                 </a>
-                <ul class="treeview-menu">
-                    <li @if(Request::getRequestUri()=='/admin/msflink')class="active"@endif><a href="/admin/msflink"><i class="fa fa-circle-o"></i> 美食友情链接列表</a></li>
-                    <li @if(Request::getRequestUri()=='/admin/msflink/create')class="active"@endif><a href="/admin/msflink/create"><i class="fa fa-circle-o"></i> 美食添加友情链接</a></li>
-                </ul>
             </li>
+
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-angellist"></i> <span>SEO工具</span>

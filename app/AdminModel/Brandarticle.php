@@ -5,10 +5,11 @@ namespace App\AdminModel;
 use App\Scopes\PublishedScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Brandarticle extends Model
 {
-    protected $guarded = ['imagepic','xiongzhang','updatetime','image','indexlitpic','input-image','topid'];
+    protected $guarded = ['imagepic','xiongzhang','updatetime','image','indexlitpic','input-image'];
 
     /**
      * 文档入库之前的时间格式转换
@@ -18,39 +19,47 @@ class Brandarticle extends Model
     {
         if(!empty($date) && strpos($date,':')==false)
         {
-            $this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d',$date);
+            $this->attributes['published_at'] =  Carbon::createFromFormat('Y-m-d',$date)->addHours(rand(1,24))->addMinutes(rand(1,60));
         }else{
             $this->attributes['published_at'] =$date?$date : Carbon::now();
         }
     }
 
-    public function getLitpicAttribute($litpic)
-    {
-        return $litpic?$litpic:'/mobile/images/nopic.png';
-    }
-
-    public function getBrandareaAttribute($brandarea)
-    {
-        return $brandarea?$brandarea:'全国';
-    }
-
-    /**自定义文档属性去重排序
-     * @param $flags
+    /**违禁词过滤title
+     * @param $title
      */
-    public function setFlagsAttribute($flags)
+    public function setTitleAttribute($title)
     {
-        if (!empty($flags))
+        if (Storage::exists('guarded.txt'))
         {
-            $flags=array_unique(explode(',',$flags));
-            sort($flags);
-            $newflags='';
-            foreach ($flags as $flag)
+            $filtertitles=array_unique(array_filter(explode(PHP_EOL,Storage::get('guarded.txt'))));
+            foreach ($filtertitles as $filtertitle)
             {
-                $newflags.=$flag.',';
+                if (str_contains($title,str_replace([PHP_EOL,"\r"],'',$filtertitle)))
+                {
+                    exit('标题：'.$title.'为违禁词，不允许发布');
+                }
             }
-            $this->attributes['flags']=trim($newflags,',');
         }
-
+        $this->attributes['title']=$title;
+    }
+    /**违禁词过滤brandname
+     * @param $title
+     */
+    public function setBrandnameAttribute($brandname)
+    {
+        if (Storage::exists('guarded.txt'))
+        {
+            $filtertitles=array_unique(array_filter(explode(PHP_EOL,Storage::get('guarded.txt'))));
+            foreach ($filtertitles as $filtertitle)
+            {
+                if (str_contains($brandname,str_replace([PHP_EOL,"\r"],'',$filtertitle)))
+                {
+                    exit('品牌名称：'.$brandname.'为违禁词，不允许发布');
+                }
+            }
+        }
+        $this->attributes['brandname']=$brandname;
     }
     /**
      * 全局scope定义
@@ -66,13 +75,5 @@ class Brandarticle extends Model
     public function arctype()
     {
         return $this->belongsTo('App\AdminModel\Arctype','typeid');
-    }
-    public function area()
-    {
-        return $this->belongsTo('App\AdminModel\Area','province_id');
-    }
-    public function investment()
-    {
-        return $this->belongsTo('App\AdminModel\InvestmentType','tzid');
     }
 }

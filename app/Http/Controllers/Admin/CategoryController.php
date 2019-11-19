@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\AdminModel\Arctype;
+use App\Events\CategoryCacheCreateEvent;
 use App\Helpers\UploadImages;
 use App\Http\Requests\StoreCategoryRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -23,19 +23,13 @@ class CategoryController extends Controller
     }
     function Index(){
         $topnavs=Arctype::where('reid',0)->pluck('typename','id');
-        $recursivestypeinfos = Cache::get('recursivestypeinfos_');
-        Cache::remember('recursivestypeinfos_', 60*24, function() use($topnavs)
+        foreach ($topnavs as $key=>$topnav)
         {
-            $recursivestypeinfos=[];
-            foreach ($topnavs as $key=>$topnav)
+            if(!empty(Arctype::where('reid',$key)->pluck('typename','id')->toArray()))
             {
-                if(!empty(Arctype::where('reid',$key)->pluck('typename','id')->toArray()))
-                {
-                    $recursivestypeinfos[$key]=$this->GetRecursiveType($key);
-                }
+                $recursivestypeinfos[$key]=$this->GetRecursiveType($key);
             }
-            return $recursivestypeinfos;
-        });
+        }
         return view('admin.category',compact('topnavs','recursivestypeinfos'));
     }
 
@@ -82,6 +76,8 @@ class CategoryController extends Controller
         }
         //dd($requestdata);
         Arctype::create($requestdata);
+        $thistyppeinfos=Arctype::first();
+        event(new CategoryCacheCreateEvent($thistyppeinfos));
         return redirect(action('Admin\CategoryController@Index'));
 
 
@@ -131,6 +127,8 @@ class CategoryController extends Controller
         }
         //dd($requestdata);
         Arctype::findOrFail($id)->update($requestdata);
+        $thistyppeinfos=Arctype::where('id',$id)->first();
+        event(new CategoryCacheCreateEvent($thistyppeinfos));
         return redirect(action('Admin\CategoryController@Index'));
     }
 
@@ -170,7 +168,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * 递归当前栏目子栏目
+     * 递归当前栏目自栏目
      * @param 栏目id
      *
      * @return arraydatas
@@ -210,16 +208,6 @@ class CategoryController extends Controller
             $relapath.='/'.$this->GetRealPath(Arctype::where('id',Arctype::where('id',$reid)->value('id'))->value('reid'));
         }
         return $relapath;
-    }
-
-    /**获取当前栏目子栏目
-     * @param Request $request
-     * @return mixed
-     */
-    public function GetSontypes(Request $request)
-    {
-        $sontypes=Arctype::where('topid',$request->topid)->pluck('typename','id');
-        return $sontypes;
     }
 }
 

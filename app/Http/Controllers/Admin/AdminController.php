@@ -25,7 +25,7 @@ class AdminController extends Controller
 
     function Index()
     {
-        $adminlists=Admin::all();
+        $adminlists=Admin::orderBy('id','desc')->take(1000)->get();
         return view('admin.adminlist',compact('adminlists'));
     }
 

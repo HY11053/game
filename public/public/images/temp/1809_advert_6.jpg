@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Error>
-  <Code>AccessDenied</Code>
-  <Message>You are denied by bucket referer policy.</Message>
-  <RequestId>58229427F283E263372C5D75</RequestId>
-  <HostId>img02.anxjm.com</HostId>
-  <BucketName>brand</BucketName>
-</Error>

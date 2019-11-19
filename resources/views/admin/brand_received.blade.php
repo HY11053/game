@@ -48,7 +48,7 @@
                                 <td>{{$article->editor}}</td>
                                 <td>@if($article->isedit) <span class="text-green"> 已修改</span> @else <s class="text-danger">未修改</s> @endif</td>
                                 <td>@if($article->ismake) 已审核 @else <s class="red">未审核</s> @endif</td>
-                                <td class="astyle"><span class="label label-success"><a href="/xm/{{$article->id}}.html" target="_blank">预览</a></span><span class="label label-warning"><a href="/admin/article/brandedit/{{$article->id}}">编辑</a></span><span class="label label-danger"></span></td>
+                                <td class="astyle"><span class="label label-success"><a href="/xm/{{$article->id}}.shtml" target="_blank">预览</a></span><span class="label label-warning"><a href="/admin/article/brandedit/{{$article->id}}">编辑</a></span><span class="label label-danger"></span></td>
                             </tr>
                         @endforeach
 

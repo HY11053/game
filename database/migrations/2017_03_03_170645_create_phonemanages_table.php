@@ -15,18 +15,17 @@ class CreatePhonemanagesTable extends Migration
     {
         Schema::create('phonemanages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('phoneno',500);
             $table->string('name')->nullable();
-            $table->string('address')->nullable('');
-            $table->ipAddress('ip')->nullable();
+            $table->string('phoneno',11)->index();
             $table->string('note')->nullable();
-            $table->string('host')->nullable();
-            $table->text('referer')->nullable();
-            $table->integer('status')->default(0);
+            $table->string('host')->nullable()->index();
+            $table->string('referer')->nullable()->index();
+            $table->string('adgroup')->nullable()->index();//推广计划
+            $table->string('adunit')->nullable()->index();//推广单元
+            $table->string('keywords')->nullable()->index();//搜索关键词
+            $table->string('adkeywords')->nullable()->index();//匹配关键词
+            $table->ipAddress('ip')->nullable()->index();
             $table->timestamps();
-            $table->index('phoneno');
-            $table->index('created_at');
-            $table->index('status');
         });
     }
 

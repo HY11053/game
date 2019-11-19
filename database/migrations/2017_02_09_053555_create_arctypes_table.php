@@ -15,33 +15,22 @@ class CreateArctypesTable extends Migration
     {
         Schema::create('arctypes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('reid')->default(0);
-            $table->integer('topid')->default(0);
-            $table->integer('sortrank')->nullable();
-            $table->string('typename')->nullable();
-            $table->string('typedir');
+            $table->integer('reid')->default(0)->index();
+            $table->integer('topid')->default(0)->index();
+            $table->integer('sortrank')->nullable()->index();
+            $table->string('typename')->nullable()->index();
+            $table->string('typedir')->index();
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('keywords')->nullable();
-            $table->smallInteger('dirposition')->default(1);
-            $table->integer('is_write');
-            $table->string('real_path');
+            $table->smallInteger('dirposition')->default(1)->index();
+            $table->integer('is_write')->index();
+            $table->string('real_path')->unique()->index();
             $table->string('litpic')->nullable();
             $table->text('typeimages')->nullable();
-            $table->text('contents')->nullable();
-            $table->integer('mid')->default(1);
-            $table->string('redirect')->nullable();
+            $table->text('body')->nullable();
+            $table->integer('mid')->default(1)->index();
             $table->timestamps();
-            $table->index('reid');
-            $table->index('topid');
-            $table->index('sortrank');
-            $table->index('typedir');
-            $table->index('real_path');
-            $table->index('dirposition');
-            $table->index('is_write');
-            $table->index('litpic');
-            $table->index('mid');
-            $table->index('redirect');
         });
     }
 

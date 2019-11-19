@@ -15,10 +15,6 @@
                     <input type="text" class="form-control" name="type" placeholder="投资金额" value="{{$thisinvestment->type}}">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div>
-                <div class="form-group has-feedback">
-                    <input type="text" class="form-control" name="url" placeholder="分类路径"  value="{{$thisinvestment->url}}">
-                    <span class="glyphicon glyphicon-usd form-control-feedback"></span>
-                </div>
                 <div class="row">
                     <!-- /.col -->
                     <div class="col-xs-12">

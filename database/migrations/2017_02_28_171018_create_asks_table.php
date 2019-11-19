@@ -15,24 +15,17 @@ class CreateAsksTable extends Migration
     {
         Schema::create('asks', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('user_id')->index();
             $table->string('title');
             $table->text('body')->nullable();
-            $table->integer('viewnum')->default(0);
-            $table->integer('answernum')->default(0);
-            $table->integer('is_hidden')->default(0);
-            $table->ipAddress('ip')->nullable();
+            $table->integer('viewnum')->default(0)->index();
+            $table->integer('answernum')->default(0)->index();
+            $table->integer('is_hidden')->default(0)->index();
+            $table->ipAddress('ip')->nullable()->index();
             $table->string('tags')->nullable();
-            $table->integer('goodpost')->default(0);
-            $table->integer('mid')->default(0);
+            $table->integer('goodpost')->default(0)->index();
+            $table->integer('mid')->default(0)->index();
             $table->timestamps();
-            $table->index('user_id');
-            $table->index('viewnum');
-            $table->index('answernum');
-            $table->index('is_hidden');
-            $table->index('goodpost');
-            $table->index('mid');
-            $table->index('ip');
         });
     }
 

@@ -15,10 +15,8 @@ class CreateBrandTypesTable extends Migration
     {
         Schema::create('brand_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('brandtype');
-            $table->string('brandname');
-            $table->index('brandtype');
-            $table->index('brandname');
+            $table->string('brandtype')->index();
+            $table->string('brandname')->index();
             $table->timestamps();
         });
     }

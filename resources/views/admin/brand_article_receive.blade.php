@@ -49,9 +49,9 @@
                                 <td>@if($article->editor_id) 已领取 @else <span id="update_{{$article->id}}" class="red" style="text-decoration:line-through">未领取</span> @endif</td>
                                 <td><span id="update_n{{$article->id}}">@if($article->editor){{$article->editor}} @else 暂无领取 @endif</span></td>
                                 @if(!$article->editor_id)
-                                <td class="astyle"><span class="label label-success"><a href="/news/{{$article->id}}.html" target="_blank">预览</a></span><span class="label label-warning"><a href="/admin/article/brandedit/{{$article->id}}">编辑</a></span><span class="label label-danger" style="cursor: pointer" id="btn_{{$article->id}}" onclick="updateReceive({{$article->id}})">未领取</span>
+                                <td class="astyle"><span class="label label-success"><a href="/news/{{$article->id}}.shtml" target="_blank">预览</a></span><span class="label label-warning"><a href="/admin/article/brandedit/{{$article->id}}">编辑</a></span><span class="label label-danger" style="cursor: pointer" id="btn_{{$article->id}}" onclick="updateReceive({{$article->id}})">未领取</span>
                                 @else
-                                <td class="astyle"><span class="label label-success"><a href="/news/{{$article->id}}.html" target="_blank">预览</a></span><span class="label label-warning"><a href="/admin/article/brandedit/{{$article->id}}">编辑</a></span><span class="label label-success">已领取</span>
+                                <td class="astyle"><span class="label label-success"><a href="/news/{{$article->id}}.shtml" target="_blank">预览</a></span><span class="label label-warning"><a href="/admin/article/brandedit/{{$article->id}}">编辑</a></span><span class="label label-success">已领取</span>
                                 @endif
                                 </td>
                             </tr>

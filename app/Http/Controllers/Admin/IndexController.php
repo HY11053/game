@@ -28,9 +28,9 @@ class IndexController extends Controller
         $newArticles=Archive::take(6)->orderBy('id','desc')->get();
         $labelStyle=['label-danger','label-info','label-warning','label-success','label-primary','label-default'];
         $articlenum = Cache::remember('articlenum_count', 60*24, function() {
-            return Archive::count();});
+            return Archive::count('id');});
         $brandnum=Cache::remember('brandnum_count', 60*24, function() {
-            return Brandarticle::count();});
+            return Brandarticle::count('id');});
         return view('admin.admin_index',compact('articleUsers','colorStyle','newArticles','labelStyle','articlenum','brandnum'));
     }
 }

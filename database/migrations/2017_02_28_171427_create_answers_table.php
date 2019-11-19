@@ -15,18 +15,13 @@ class CreateAnswersTable extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('ask_id');
-            $table->integer('user_id');
+            $table->integer('ask_id')->index();
+            $table->integer('user_id')->index();
             $table->text('content')->nullable();
-            $table->integer('goodpost')->default(0);
-            $table->integer('is_hidden')->default(0);
-            $table->ipAddress('ip');
+            $table->integer('goodpost')->default(0)->index();
+            $table->integer('is_hidden')->default(0)->index();
+            $table->ipAddress('ip')->index();
             $table->timestamps();
-            $table->index('ask_id');
-            $table->index('user_id');
-            $table->index('goodpost');
-            $table->index('is_hidden');
-            $table->index('ip');
         });
     }
 

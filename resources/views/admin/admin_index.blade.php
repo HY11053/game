@@ -25,7 +25,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">前台会员数</span>
-                    <span class="info-box-number">{{\App\AdminModel\Admin::count()}}</span>
+                    <span class="info-box-number">{{\App\AdminModel\Admin::count('id')}}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -42,7 +42,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">电话总数</span>
-                    <span class="info-box-number">{{\App\AdminModel\Phonemanage::count()}}</span>
+                    <span class="info-box-number">{{\App\AdminModel\Phonemanage::count('id')}}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -73,15 +73,15 @@
                     <h3 class="box-title">整体数据概览</h3>
                     <span style="margin-left: 5px; display: inline-block;">
                         <i class="ion ion-bonfire text-red"></i>
-                        今日文章发布数：{{\App\AdminModel\Archive::where('created_at','>',Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::tomorrow())->count()}}
+                        今日文章发布数：{{\App\AdminModel\Archive::where('created_at','>',Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::tomorrow())->count('id')}}
                     </span>
                     <span style="margin-left: 5px; display: inline-block;">
                         <i class="ion ion-bonfire text-red"></i>
-                        今日品牌发布数：{{\App\AdminModel\Brandarticle::where('created_at','>',Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::tomorrow())->count()}}
+                        今日品牌发布数：{{\App\AdminModel\Brandarticle::where('created_at','>',Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::tomorrow())->count('id')}}
                     </span>
                     <span style=" margin-left: 5px;isplay: inline-block;">
                         <i class="ion ion-ios-pulse text-red"></i>
-                        今日电话提交数：{{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::tomorrow())->count()}}
+                        今日电话提交数：{{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::tomorrow())->count('id')}}
                     </span>
 
                     <div class="box-tools pull-right">
@@ -112,24 +112,26 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-md-4">
+                            <div class="smscrolls">
                             <p class="text-center">
                                 <strong>编辑文章完成比</strong>
                             </p>
 
                             @if(auth('admin')->user()->type>0)
-                            @foreach($articleUsers as $articleUser)
-                                <div class="progress-group">
-                                    <span class="progress-text">{{$articleUser}}</span>
-                                    <span class="progress-number"><b>{{(\App\AdminModel\Archive::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::now())->where('write',$articleUser)->count() )+ (\App\AdminModel\Brandarticle::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::now())->where('write',$articleUser)->count())}}</b>/45</span>
+                                @foreach($articleUsers as $articleUser)
+                                    <div class="progress-group">
+                                        <span class="progress-text">{{$articleUser}}</span>
+                                        <span class="progress-number"><b>{{(\App\AdminModel\Archive::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::now())->where('write',$articleUser)->count('id') )+ (\App\AdminModel\Brandarticle::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::now())->where('write',$articleUser)->count('id'))}}</b>/45</span>
 
-                                    <div class="progress sm">
-                                        <div class="progress-bar progress-bar-{{$colorStyle[rand(0,4)]}}" style="width: {{sprintf("%.4f",((\App\AdminModel\Archive::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::now())->where('write',$articleUser)->count())+(\App\AdminModel\Brandarticle::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::now())->where('write',$articleUser)->count()))/45,0,-1)*100}}%"></div>
+                                        <div class="progress sm">
+                                            <div class="progress-bar progress-bar-{{$colorStyle[rand(0,4)]}}" style="width: {{sprintf("%.4f",((\App\AdminModel\Archive::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::now())->where('write',$articleUser)->count('id'))+(\App\AdminModel\Brandarticle::where('created_at','>',\Carbon\Carbon::today())->where('created_at','<',\Carbon\Carbon::now())->where('write',$articleUser)->count('id')))/45,0,-1)*100}}%"></div>
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
                             @else
                                 No right!!!
                             @endif
+                            </div>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -244,22 +246,18 @@
     <script src="/adminlte/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- ChartJS 1.0.1 -->
     <script src="/adminlte/plugins/chartjs/Chart.min.js"></script>
+    <script src="/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <!-- AdminLTE for demo purposes -->
     <script>
-        $(function () {
-
+        $(".smscrolls").slimScroll({
+            height:'180px',
+            width:'100%',
+            alwaysVisible: true,
+            wheelStep: 5,
+        });
+        $(document).ready(function(){
             'use strict';
-
-            /* ChartJS
-             * -------
-             * Here we will create a few charts using ChartJS
-             */
-
-            //-----------------------
-            //- MONTHLY SALES CHART -
-            //-----------------------
-
             // Get context with jQuery - using jQuery's .get() method.
             var salesChartCanvas = $("#salesChart").get(0).getContext("2d");
             // This will get the first returned node in the jQuery collection.
@@ -286,14 +284,14 @@
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(60,141,188,1)",
                         data: [
-                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(7))->where('created_at','<',\Carbon\Carbon::today()->subDays(6))->count()}},
-                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(6))->where('created_at','<',\Carbon\Carbon::today()->subDays(5))->count()}},
-                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(5))->where('created_at','<',\Carbon\Carbon::today()->subDays(4))->count()}},
-                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(4))->where('created_at','<',\Carbon\Carbon::today()->subDays(3))->count()}},
-                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(3))->where('created_at','<',\Carbon\Carbon::today()->subDays(2))->count()}},
-                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(2))->where('created_at','<',\Carbon\Carbon::today()->subDays(1))->count()}},
-                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::yesterday())->where('created_at','<',\Carbon\Carbon::today())->count()}},
-                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today())->count()}}
+                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(7))->where('created_at','<',\Carbon\Carbon::today()->subDays(6))->count('id')}},
+                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(6))->where('created_at','<',\Carbon\Carbon::today()->subDays(5))->count('id')}},
+                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(5))->where('created_at','<',\Carbon\Carbon::today()->subDays(4))->count('id')}},
+                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(4))->where('created_at','<',\Carbon\Carbon::today()->subDays(3))->count('id')}},
+                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(3))->where('created_at','<',\Carbon\Carbon::today()->subDays(2))->count('id')}},
+                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today()->subDays(2))->where('created_at','<',\Carbon\Carbon::today()->subDays(1))->count('id')}},
+                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::yesterday())->where('created_at','<',\Carbon\Carbon::today())->count('id')}},
+                            {{\App\AdminModel\Phonemanage::where('created_at','>',\Carbon\Carbon::today())->count('id')}}
                         ]
                     }
                 ]

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('安心加盟网', '安心加盟网'),
+    'name' => env('APP_NAME', 'WDCP'),
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     |
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
-    | services your application utilizes. Set this in your ".env" file.
+    | services the application utilizes. Set this in your ".env" file.
     |
     */
 
@@ -52,7 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://www.anxjm.com'),
+    'url' => env('APP_URL', 'http://localhost'),
+
+    'asset_url' => env('ASSET_URL', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -65,8 +67,25 @@ return [
     |
     */
 
-    'timezone' => 'PRC',
+    'timezone' => 'UTC',
 
+    /*
+    |--------------------------------------------------------------------------
+    | System Settings
+    |--------------------------------------------------------------------------
+    |
+    | Site home page key words and description and record information
+    | and other related settings
+    */
+    'webname'=>'',
+    'indexname'=>'',
+    'keywords'=>'',
+    'description'=>'',
+    'api'=>'',
+    'mip_api'=>'',
+    'mip_history'=>'',
+    'cachetime'=>60*24*60,
+    /*
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -95,6 +114,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Faker Locale
+    |--------------------------------------------------------------------------
+    |
+    | This locale will be used by the Faker PHP library when generating fake
+    | data for your database seeds. For example, this will be used to get
+    | localized telephone numbers, street address information and more.
+    |
+    */
+
+    'faker_locale' => 'en_US',
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |
@@ -107,40 +139,6 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Logging Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the log settings for your application. Out of
-    | the box, Laravel uses the Monolog PHP logging library. This gives
-    | you a variety of powerful log handlers / formatters to utilize.
-    |
-    | Available Settings: "single", "daily", "syslog", "errorlog"
-    |
-    */
-
-    'log' => env('APP_LOG', 'daily'),
-
-    'log_level' => env('APP_LOG_LEVEL', 'debug'),
-    /*
-    |--------------------------------------------------------------------------
-    | System Settings
-    |--------------------------------------------------------------------------
-    |
-    | Site home page key words and description and record information
-    | and other related settings
-    */
-    'webname'=>'安心加盟网-真实性连锁招商加盟项目综合服务平台',
-    'indexname'=>'安心加盟网',
-    'keywords'=>'安心加盟网，招商加盟网，加盟网',
-    'description'=>'安心加盟网站审核真实性连锁加盟好项目加盟网站,提供好的加盟项目加盟店,最新加盟项目,创业加盟项目加盟店,免费项目加盟网站承诺加盟店加盟真实项目加盟网站',
-    //'api'=>'http://data.zz.baidu.com/urls?site=https://www.anxjm.com&token=In4byPCfBukFdaF7',
-    //'mip_api'=>'http://data.zz.baidu.com/urls?appid=1634320825234209&token=XvJlSTeDxYiqQYfX&type=realtime',
-    //'mip_history'=>'http://data.zz.baidu.com/urls?appid=1634320825234209&token=XvJlSTeDxYiqQYfX&type=batch',
-    'cachetime'=>30*24*60,
-    /*
 
     /*
     |--------------------------------------------------------------------------
@@ -180,12 +178,16 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
         Collective\Html\HtmlServiceProvider::class,
         Overtrue\LaravelUEditor\UEditorServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -194,7 +196,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Jenssegers\Agent\AgentServiceProvider::class,
 
     ],
 
@@ -212,6 +213,7 @@ return [
     'aliases' => [
 
         'App' => Illuminate\Support\Facades\App::class,
+        'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
@@ -241,6 +243,7 @@ return [
         'Schema' => Illuminate\Support\Facades\Schema::class,
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
+        'Str' => Illuminate\Support\Str::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
@@ -249,6 +252,9 @@ return [
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'Ip'  => 'Zhuzhichao\IpLocationZh\Ip',
         'Agent' => 'Jenssegers\Agent\Facades\Agent',
+        'Image' => Intervention\Image\Facades\Image::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
     ],
 
 ];

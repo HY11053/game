@@ -23,7 +23,25 @@ function Recursivestypeinfos($arr){
             {
                 //dd($value);
                 echo " <li><a class=\"arctype\" href=\"/admin/article/type/{$key}\"><i class=\"fa fa-envelope-o\"></i> {$value['list']}</a>
-                                <span class=\"label label-danger pull-right\" data-toggle=\"modal\" data-target=\".modal-sm{$key}\">删除</span>                               
+                                <span class=\"label label-primary pull-right\">".\App\AdminModel\Archive::where('typeid',$key)->count()."</span>
+                                <span class=\"label label-danger pull-right\" data-toggle=\"modal\" data-target=\".modal-sm{$key}\">删除</span>
+                                <div class=\"modal fade modal-sm{$key}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\">
+                            <div class=\"modal-dialog modal-s-m{$key} modal-sm\" role=\"document\">
+                                <div class=\"modal-content\">
+                                    <div class=\"modal-header\">
+                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>
+                                        <h5 class=\"modal-title\" id=\"mySmallModalLabel\">是否要删除栏目</h5>
+                                    </div>
+                                    <div class=\"modal-body\">
+                                        {$value['list']}
+                                    </div>
+                                    <div class=\"modal-footer\">
+                                        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">返回</button>
+                                        <button type=\"button\" class=\"btn btn-primary\" id='btn-{$key}'  onclick=\"AjDelete({$key},'modal-s-m{$key}')\">删除</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                                  <span class=\"label label-success pull-right\" onclick=\"link({$key},'admin/category/edit')\">编辑</span> 
                                  <span class=\"label label-warning pull-right\" onclick=\"link({$key},'admin/category/create')\">添加子类</span></li>";
                 if (isset($value['next']))
@@ -43,16 +61,51 @@ function Recursivestypeinfos($arr){
                         if(isset($items['list']))
                         {
 
-                            echo "<li class=\"active\"><a class=\"arctype\" href=\"/admin/article/type/{$item}\"><i class=\"fa fa-inbox\"></i>".$items['list']."</a>
-                            <span class=\"label label-danger pull-right\" data-toggle=\"modal\" data-target=\".modal-sm{$item}\">删除</span>                                                        
+                            echo "<li class=\"active\"><a class=\"arctype\" href=\"/admin/article/type/{$item}\"><i class=\"fa fa-inbox\"></i>".$items['list']."</a><span class=\"label label-primary pull-right\">".\App\AdminModel\Archive::where('typeid',$item)->count()."</span>
+                            <span class=\"label label-danger pull-right\" data-toggle=\"modal\" data-target=\".modal-sm{$item}\">删除</span>
+                            <div class=\"modal fade modal-sm{$item}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\">
+                            <div class=\"modal-dialog modal-s-m{$item} modal-sm\" role=\"document\">
+                                <div class=\"modal-content\">
+                                    <div class=\"modal-header\">
+                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>
+                                        <h5 class=\"modal-title\" id=\"mySmallModalLabel\">是否要删除栏目</h5>
+                                    </div>
+                                    <div class=\"modal-body\">
+                                        {$items['list']}
+                                    </div>
+                                    <div class=\"modal-footer\">
+                                        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">返回</button>
+                                        <button type=\"button\" class=\"btn btn-primary\" id='btn-{$item}' onclick=\"AjDelete({$item},'modal-s-m{$item}')\">删除</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            
                              <span class=\"label label-success pull-right\" onclick=\"link({$item},'admin/category/edit')\">编辑</span> <span class=\"label label-warning pull-right\" onclick=\"link({$item},'admin/category/create')\">添加子类</span></li>";
                             if(isset($items['next'])){
 
                                 Recursivestypeinfos($items['next']);
                             }
                         }else{
-                            echo "<li class=\"active\"><a class=\"arctype\" href=\"/admin/article/type/{$item}\"><i class=\"fa fa-inbox\"></i>".$items." </a> 
-                            <span class=\"label label-danger pull-right\" data-toggle=\"modal\" data-target=\".modal-sm$item\">删除</span>                             
+                            echo "<li class=\"active\"><a class=\"arctype\" href=\"/admin/article/type/{$item}\"><i class=\"fa fa-inbox\"></i>".$items." </a> <span class=\"label label-primary pull-right\">".\App\AdminModel\Archive::where('typeid',$item)->count()."</span>
+                            <span class=\"label label-danger pull-right\" data-toggle=\"modal\" data-target=\".modal-sm$item\">删除</span> 
+                            <div class=\"modal fade modal-sm{$item}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\">
+                            <div class=\"modal-dialog modal-sm modal-s-m{$item} \" role=\"document\">
+                                <div class=\"modal-content\">
+                                    <div class=\"modal-header\">
+                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>
+                                        <h5 class=\"modal-title\" id=\"mySmallModalLabel\">是否要删除栏目</h5>
+                                    </div>
+                                    <div class=\"modal-body\">
+                                        {$items}
+                                    </div>
+                                    <div class=\"modal-footer\">
+                                        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">返回</button>
+                                        <button type=\"button\" class=\"btn btn-primary\" id='btn-{$item}'  onclick=\"AjDelete({$item},'modal-s-m{$item}')\" >删除</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                             <span class=\"label label-success pull-right\" onclick=\"link({$item},'admin/category/edit')\">编辑</span> <span class=\"label label-warning pull-right\" onclick=\"link({$item},'admin/category/create')\">添加子类</span></li>";
 
                         }
@@ -61,13 +114,33 @@ function Recursivestypeinfos($arr){
                     echo "</ul>
                                     </div>
                                             </div>";
+
                 }
             }else{
-                echo " <li><a class=\"arctype\" href=\"/admin/article/type/{$key}\"><i class=\"fa fa-envelope-o\"></i> {$value}</a>                       
-                                <span class=\"label label-danger pull-right\" data-toggle=\"modal\" data-target=\".modal-sm{$key}\">删除</span>                                
+                echo " <li><a class=\"arctype\" href=\"/admin/article/type/{$key}\"><i class=\"fa fa-envelope-o\"></i> {$value}</a>
+                                <span class=\"label label-primary pull-right\">".\App\AdminModel\Archive::where('typeid',$value)->count()."</span>
+                                <span class=\"label label-danger pull-right\" data-toggle=\"modal\" data-target=\".modal-sm{$key}\">删除</span>
+                                <div class=\"modal fade modal-sm{$key}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\">
+                            <div class=\"modal-dialog modal-sm modal-s-m{$key} \" role=\"document\">
+                                <div class=\"modal-content\">
+                                    <div class=\"modal-header\">
+                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>
+                                        <h5 class=\"modal-title\" id=\"mySmallModalLabel\">是否要删除栏目</h5>
+                                    </div>
+                                    <div class=\"modal-body\">
+                                         {$value}
+                                    </div>
+                                    <div class=\"modal-footer\">
+                                        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">返回</button>
+                                        <button type=\"button\" class=\"btn btn-primary\" id='btn-{$key}' onclick=\"AjDelete({$key},'modal-s-m{$key}')\">删除</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                                  <span class=\"label label-success pull-right\" onclick=\"link({$key},'admin/category/edit')\">编辑</span> <span class=\"label label-warning pull-right\" onclick=\"link({$key},'admin/category/create')\">添加子类</span></li>";
 
             }
+
 
         }
     }

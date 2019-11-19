@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class InvestmentType extends Model
 {
     //
-    protected $fillable=['id','type','url'];
+    protected $fillable=['type'];
 }

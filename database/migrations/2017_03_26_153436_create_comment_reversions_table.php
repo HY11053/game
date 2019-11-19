@@ -15,20 +15,14 @@ class CreateCommentReversionsTable extends Migration
     {
         Schema::create('comment_reversions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('comment_id');
-            $table->integer('archive_id');
-            $table->integer('user_id');
-            $table->integer('goodpost')->default(0);
-            $table->integer('is_hidden')->default(0);
+            $table->integer('comment_id')->index();
+            $table->integer('archive_id')->index();
+            $table->integer('user_id')->index();
+            $table->integer('goodpost')->default(0)->index();
+            $table->integer('is_hidden')->default(0)->index();
             $table->text('content');
-            $table->ipAddress('ip');
+            $table->ipAddress('ip')->index();
             $table->timestamps();
-            $table->index('comment_id');
-            $table->index('archive_id');
-            $table->index('user_id');
-            $table->index('goodpost');
-            $table->index('is_hidden');
-            $table->index('ip');
         });
     }
 

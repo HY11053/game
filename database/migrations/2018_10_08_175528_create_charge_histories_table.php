@@ -15,9 +15,9 @@ class CreateChargeHistoriesTable extends Migration
     {
         Schema::create('charge_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('score');
-            $table->string('group');
-            $table->string('operater');
+            $table->integer('score')->index();
+            $table->string('group')->index();
+            $table->string('operater')->index();
             $table->ipAddress('ip');
             $table->timestamps();
         });

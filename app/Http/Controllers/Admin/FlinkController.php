@@ -9,6 +9,10 @@ use App\Http\Controllers\Controller;
 
 class FlinkController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth.admin:admin');
+    }
     /**
      * 友情链接列表
      * @param
@@ -83,5 +87,6 @@ class FlinkController extends Controller
     function DeleteFlink($id)
     {
         flink::find($id)->delete();
+        return redirect(action('Admin\FlinkController@Index'));
     }
 }

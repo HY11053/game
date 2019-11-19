@@ -15,14 +15,12 @@
                         <tr>
                             <th style="width: 10px">id</th>
                             <th>分类名称</th>
-                            <th>分类路径</th>
                             <th style="width: 120px; text-align: center;">操作</th>
                         </tr>
                         @foreach($investlists as $investlist)
                             <tr>
                                 <td>{{$investlist->id}}.</td>
                                 <td>{{$investlist->type}}</td>
-                                <td>{{$investlist->url}}</td>
                                 <td style="text-align: center;">
                                     <a href="/admin/investment/edit/{{$investlist->id}}"><span class="label label-success" style="font-weight: normal">编辑</span></a>
                                 </td>

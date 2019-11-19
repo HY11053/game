@@ -16,10 +16,7 @@
                     <input type="text" class="form-control" name="type" placeholder="投资金额">
                     <span class="glyphicon glyphicon-usd form-control-feedback"></span>
                 </div>
-                <div class="form-group has-feedback">
-                    <input type="text" class="form-control" name="url" placeholder="分类路径">
-                    <span class="glyphicon glyphicon-usd form-control-feedback"></span>
-                </div>
+
                 <div class="row">
                     <!-- /.col -->
                     <div class="col-xs-12">

@@ -17,41 +17,61 @@
         <div class="col-md-12">
             <div class="btn btn-primary btn-block margin-bottom nleft"><span style="color: #ffffff; display: inline-block; float: left;">网站栏目管理</span> <a href="{{route('category_create')}}" style="color: #ffffff; display: inline-block; float: right;">添加栏目</a><span style="display: inline-block; height: 0px; clear: both;"></span></div>
             @foreach($topnavs as $key=>$topnav)
-                <div class="box box-solid collapsed-box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title "><a href="/admin/article/type/{{$key}}"> {{$topnav}}</a> </h3>
-                        <div class="spide_span">
-                            <span class="label label-primary pull-right ncls">暂不统计</span>
-                            <span class="label label-danger pull-right" data-toggle="modal" data-target=".modal-sm{{$key}}">删除</span>
-                            <span class="label label-success pull-right" onclick="link({{$key}},'admin/category/edit')">编辑</span>
-                            <span class="label label-warning pull-right" onclick="link({{$key}},'admin/category/create')">添加子类</span>
+            <div class="box box-solid collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title "><a href="/admin/article/type/{{$key}}"> {{$topnav}}</a> </h3>
+                    <div class="spide_span">
+                        <span class="label label-primary pull-right ncls">@if(\App\AdminModel\Arctype::where('id',$key)->value('mid')==0){{\App\AdminModel\Archive::where('typeid',$key)->count()}} @elseif(\App\AdminModel\Arctype::where('id',$key)->value('mid')==1) {{\App\AdminModel\Brandarticle::whereIn('typeid',\App\AdminModel\Arctype::where('reid',$key)->pluck('id'))->count()}} @elseif(\App\AdminModel\Arctype::where('id',$key)->value('mid')==2) {{\App\AdminModel\Zhanhui::whereIn('typeid',\App\AdminModel\Arctype::where('reid',$key)->pluck('id'))->count()}} @endif</span>
+                        <span class="label label-danger pull-right" data-toggle="modal" data-target=".modal-sm{{$key}}">删除</span>
+                        <div class="modal fade modal-sm{{$key}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel{{$key}}">
+                            <div class="modal-dialog modal-sm modal-s-m{{$key}}" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        <h5 class="modal-title" id="mySmallModalLabel{{$key}}">是否要删除栏目</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{$topnav}}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                                        <button type="button" class="btn btn-primary" id="btn-{{$key}}" onclick="AjDelete({{$key}},'modal-s-m{{$key}}')">删除</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="box-tools">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                            </button>
-                        </div>
+                        <span class="label label-success pull-right" onclick="link({{$key}},'admin/category/edit')">编辑</span>
+                        <span class="label label-warning pull-right" onclick="link({{$key}},'admin/category/create')">添加子类</span>
                     </div>
-                    @if(isset($recursivestypeinfos[$key]))
-                        <div class="box-body no-padding">
-                            <ul class="nav nav-pills nav-stacked">
-                                @foreach($recursivestypeinfos as $keys=>$recursivestypeinfo)
-                                    @if($key==$keys)
-                                        @if(is_array($recursivestypeinfo))
-                                            {{Recursivestypeinfos($recursivestypeinfo)}}
-                                        @endif
-                                    @endif
-                                @endforeach
-                            </ul>
-                        </div>
-                @endif
-                <!-- /.box-body -->
 
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                        </button>
+                    </div>
                 </div>
+                @if(isset($recursivestypeinfos[$key]))
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked">
+                            @foreach($recursivestypeinfos as $keys=>$recursivestypeinfo)
+                                @if($key==$keys)
+                                        @if(is_array($recursivestypeinfo))
+                                         {{Recursivestypeinfos($recursivestypeinfo)}}
+                                        @endif
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
+            @endif
+            <!-- /.box-body -->
+
+            </div>
             @endforeach
         </div>
+
     </div>
     <!-- /.row -->
 @stop
+
 @section('libs')
     <!-- iCheck -->
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
@@ -64,6 +84,7 @@
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
             });
+
             //Enable check and uncheck all functionality
             $(".checkbox-toggle").click(function () {
                 var clicks = $(this).data('clicks');
@@ -78,6 +99,7 @@
                 }
                 $(this).data("clicks", !clicks);
             });
+
             //Handle starring for glyphicon and font awesome
             $(".mailbox-star").click(function (e) {
                 e.preventDefault();
@@ -85,11 +107,13 @@
                 var $this = $(this).find("a > i");
                 var glyph = $this.hasClass("glyphicon");
                 var fa = $this.hasClass("fa");
+
                 //Switch states
                 if (glyph) {
                     $this.toggleClass("glyphicon-star");
                     $this.toggleClass("glyphicon-star-empty");
                 }
+
                 if (fa) {
                     $this.toggleClass("fa-star");
                     $this.toggleClass("fa-star-o");
@@ -98,6 +122,7 @@
 
         });
     </script>
+
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -109,6 +134,7 @@
         function link($id,$action) {
             window.location.href='/'+$action+'/'+$id;
         }
+
         function AjDelete (id,node) {
             var id = id;
             var node=node;

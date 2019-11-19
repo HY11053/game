@@ -15,18 +15,13 @@ class CreateReversionsTable extends Migration
     {
         Schema::create('reversions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('ask_id');
-            $table->integer('answer_id');
-            $table->integer('user_id');
+            $table->integer('ask_id')->index();
+            $table->integer('answer_id')->index();
+            $table->integer('user_id')->index();
             $table->text('content');
-            $table->integer('goodpost');
-            $table->integer('is_hidden')->default(0);
+            $table->integer('goodpost')->index();
+            $table->integer('is_hidden')->default(0)->index();
             $table->timestamps();
-            $table->index('ask_id');
-            $table->index('answer_id');
-            $table->index('user_id');
-            $table->index('goodpost');
-            $table->index('is_hidden');
         });
     }
 

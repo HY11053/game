@@ -26,7 +26,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-line-chart" style="width:10px;"></i>
                             </div>
-                            {{Form::select('status', [1=>'已使用',2=>'未使用'], null,array('class'=>'form-control select2  pull-right','style'=>'width: 100%','style'=>'width: 150px;','data-placeholder'=>"品牌状态",'multiple'=>"multiple"))}}
+                            {{Form::select('status', [1=>'已使用',3=>'未使用'], null,array('class'=>'form-control select2  pull-right','style'=>'width: 100%','style'=>'width: 150px;','data-placeholder'=>"品牌状态",'multiple'=>"multiple"))}}
 
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                                 <td style="text-align: left">{{$data->brand}}</td>
                                 <td>{{$data->num}}</td>
                                 <td style="text-align: center">
-                                    @if($data->status)
+                                    @if($data->status==1)
                                         <span class="badge bg-green" style=" font-weight: normal;">已使用</span>
                                     @else
                                         <span class="badge bg-red" style="cursor: pointer; font-weight: normal;" id="status{{$data->id}}" onclick="statuschick('status{{$data->id}}',{{$data->id}})">未使用</span>

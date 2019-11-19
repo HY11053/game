@@ -6,11 +6,11 @@ use App\AdminModel\Acreagement;
 use App\AdminModel\Admin;
 use App\AdminModel\Archive;
 use App\AdminModel\Arctype;
-use App\AdminModel\Area;
 use App\AdminModel\Brandarticle;
 use App\AdminModel\InvestmentType;
 use App\Events\ArticleCacheCreateEvent;
 use App\Events\ArticleCacheDeleteEvent;
+use App\Events\BaiduCurlLinkSubmitEvent;
 use App\Events\BrandArticleCacheCreateEvent;
 use App\Events\BrandArticleCacheDeleteEvent;
 use App\Http\Requests\CreateArticleRequest;
@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Log;
 
 class ArticleController extends Controller
@@ -45,7 +46,7 @@ class ArticleController extends Controller
      */
     function Brands()
     {
-        $articles=Brandarticle::withoutGlobalScope(PublishedScope::class)->orderBy('id','desc ')->paginate(30);
+        $articles=Brandarticle::withoutGlobalScope(PublishedScope::class)->orderBy('id','desc')->paginate(30);
         return view('admin.brandarticle',compact('articles'));
     }
     /**品牌文档搜索
@@ -55,7 +56,11 @@ class ArticleController extends Controller
     public function PostArticleBrandSearch(Request $request)
     {
         $articles=Brandarticle::withoutGlobalScope(PublishedScope::class)->where('title','like','%'.$request->input('title').'%')->latest()->paginate(30);
-        return view('admin.brandarticle',compact('articles'));
+        $title=$request->title;
+        if(!$articles->total()){
+            $this->GuardTitle($title);
+        }
+        return view('admin.brandarticle',compact('articles','title'));
     }
 
     /**普通文档创建
@@ -63,9 +68,8 @@ class ArticleController extends Controller
      */
     function Create()
     {
-        $brandnavs=Arctype::where('is_write',1)->where('topid',0)->where('mid',1)->pluck('typename','id');
         $allnavinfos=Arctype::where('is_write',1)->where('mid',0)->pluck('typename','id');
-        return view('admin.article_create',compact('allnavinfos','brandnavs'));
+        return view('admin.article_create',compact('allnavinfos'));
     }
 
     /**品牌文档创建
@@ -73,11 +77,10 @@ class ArticleController extends Controller
      */
     function BrandCreate()
     {
-        $allnavinfos=Arctype::where('is_write',1)->where('topid',0)->where('mid',1)->pluck('typename','id');
-        $provinces=Area::where('parentid','0')->pluck('name_cn','id');
+        $allnavinfos=Arctype::where('is_write',1)->where('mid',1)->pluck('typename','id');
         $investments=InvestmentType::orderBy('id','asc')->pluck('type','id');
         $acreagements=Acreagement::orderBy('id','asc')->pluck('type','id');
-        return view('admin.article_brandcreate',compact('allnavinfos','investments','acreagements','provinces'));
+        return view('admin.article_brandcreate',compact('allnavinfos','investments','acreagements'));
     }
 
     /**文档创建提交数据处理
@@ -90,31 +93,34 @@ class ArticleController extends Controller
         {
             exit('标题重复，禁止发布');
         }
-        if ($request->brandid)
+        if (!empty($request['bdname']))
         {
-            $request['bdname']=Brandarticle::withoutGlobalScope(PublishedScope::class)->where('id',$request->brandid)->value('brandname');
+            $brandinfos=Brandarticle::withoutGlobalScope(PublishedScope::class)->where('ismake',1)->where('brandname','like','%'.$request['bdname'].'%')->first(['id','published_at']);
+            if (isset($brandinfos->id))
+            {
+                $request['brandid']=$brandinfos->id;
+                if ( Carbon::parse($brandinfos->published_at)>Carbon::now())
+                {
+                    $request['published_at']=Carbon::parse($brandinfos->published_at)->addMinutes(rand(1,300))->addSeconds(rand(1,59));
+                }
+            }else{
+                $request['brandid']=0;
+            }
         }
         $this->RequestProcess($request);
         if ( Archive::create($request->all())->wasRecentlyCreated)
         {
             //百度相关数据提交
-            $thisarticle=Archive::withoutGlobalScope(PublishedScope::class)->first();
+            $thisarticle=Archive::withoutGlobalScope(PublishedScope::class)->latest()->first();
             if ($thisarticle->published_at>Carbon::now() || $thisarticle->ismake !=1)
             {
-                auth('admin')->user()->notify(new ArticlePublishedNofication(Archive::withoutGlobalScope(PublishedScope::class)->latest() ->first()));
+                auth('admin')->user()->notify(new ArticlePublishedNofication($thisarticle));
                 return redirect(action('Admin\ArticleController@Index'));
             }else{
-                $thisarticleurl=config('app.url').'/article/'.$thisarticle->id.'.html';
-                $miparticleurl=str_replace('www.','mip.',config('app.url')).'/article/'.$thisarticle->id.'.html';
-                $this->BaiduCurl(config('app.api'),$thisarticleurl,'百度主动提交');
-                if ($request->xiongzhang)
-                {
-                    $this->BaiduCurl(config('app.mip_api'),$miparticleurl,'熊掌号天级推送');
-                }else{
-                    $this->BaiduCurl(config('app.mip_history'),$miparticleurl,'熊掌号周级提交');
-                }
+                $thisarticleurl=config('app.url').'/news/'.$thisarticle->id.'.shtml';
+                event(new BaiduCurlLinkSubmitEvent($thisarticleurl));
                 Archive::where('id',$thisarticle->id)->update(['ispush'=>1]);
-                auth('admin')->user()->notify(new ArticlePublishedNofication(Archive::withoutGlobalScope(PublishedScope::class)->latest() ->first()));
+                //auth('admin')->user()->notify(new ArticlePublishedNofication($thisarticle));
                 event(new ArticleCacheCreateEvent(Archive::latest() ->first()));
                 return redirect(action('Admin\ArticleController@Index'));
             }
@@ -134,22 +140,25 @@ class ArticleController extends Controller
             exit('标题重复，禁止发布');
         }
         $this->RequestProcess($request);
+        if(!Admin::where('id',auth('admin')->id())->value('type'))
+        {
+            $request['ismake']=0;
+        }
+        /**
+         * if(isset($request['imagepics']) && empty($request['imagepics']))
+        {
+        $request['imagepics']=$this->processImagepics($request->body);
+        }
+         */
         if (Brandarticle::create($request->all())->wasRecentlyCreated)
         {
-            $thisarticle=Brandarticle::withoutGlobalScope(PublishedScope::class)->where('id',Brandarticle::withoutGlobalScope(PublishedScope::class)->max('id'))->find(Brandarticle::withoutGlobalScope(PublishedScope::class)->max('id'));
+            $thisarticle=Brandarticle::withoutGlobalScope(PublishedScope::class)->latest()->first();
             if ($thisarticle->published_at>Carbon::now() || $thisarticle->ismake !=1)
             {
                 return redirect(action('Admin\ArticleController@Brands'));
             }else{
-                $thisarticleurl=config('app.url').'/xiangmu/'.$thisarticle->id.'.html';
-                $this->BaiduCurl(config('app.api'),$thisarticleurl,'百度主动提交');
-                $miparticleurl=str_replace('www.','mip.',config('app.url')).'/xiangmu/'.$thisarticle->id.'.html';
-                if ($request->xiongzhang==1)
-                {
-                    $this->BaiduCurl(config('app.mip_api'),$miparticleurl,'熊掌号天级推送');
-                }elseif($request->xiongzhang==2){
-                    $this->BaiduCurl(config('app.mip_history'),$miparticleurl,'熊掌号周级提交');
-                }
+                $thisarticleurl=config('app.url').'/xm/'.$thisarticle->id.'.shtml';
+                event(new BaiduCurlLinkSubmitEvent($thisarticleurl));
                 Brandarticle::where('id',$thisarticle->id)->update(['ispush'=>1]);
                 event(new BrandArticleCacheCreateEvent($thisarticle));
                 return redirect(action('Admin\ArticleController@Brands'));
@@ -165,33 +174,28 @@ class ArticleController extends Controller
     {
         $articleinfos=Archive::withoutGlobalScope(PublishedScope::class)->findOrfail($id);
         $allnavinfos=Arctype::where('is_write',1)->where('mid',0)->pluck('typename','id');
-        $brandnavs=Arctype::where('is_write',1)->where('topid',0)->where('mid',1)->pluck('typename','id');
         $pics=explode(',',trim(Archive::withoutGlobalScope(PublishedScope::class)->where('id',$id)->value('imagepics'),','));
-        return view('admin.article_edit',compact('id','articleinfos','allnavinfos','pics','brandnavs'));
+        return view('admin.article_edit',compact('id','articleinfos','allnavinfos','pics'));
     }
     public function BrandEdit($id)
     {
-        $allnavinfos=Arctype::where('is_write',1)->where('topid',0)->where('mid',1)->pluck('typename','id');
+        $allnavinfos=Arctype::where('is_write',1)->where('mid',1)->pluck('typename','id');
         $pics=explode(',',trim(Brandarticle::withoutGlobalScope(PublishedScope::class)->where('id',$id)->value('imagepics'),','));
-        $provinces=Area::where('parentid','0')->pluck('name_cn','id');
         $articleinfos=Brandarticle::withoutGlobalScope(PublishedScope::class)->where('id',$id)->first();
-        if (empty($articleinfos))
-        {
+        if (empty($articleinfos)){
             abort(404);
         }
-        /**
-         * if ($articleinfos->dutyadmin==1 && $articleinfos->editor_id==0 &&  Admin::where('id',auth('admin')->id())->value('type')==0)
+        /*if ($articleinfos->dutyadmin==1 && $articleinfos->editor_id==0 &&  Admin::where('id',auth('admin')->id())->value('type')==0)
         {
-        exit('文档未领取,不能直接编辑');
-        }
-         */
+            exit('文档未领取,不能直接编辑');
+        }*/
         if ($articleinfos->editor_id!=0 && $articleinfos->editor_id !=auth('admin')->id() &&  Admin::where('id',auth('admin')->id())->value('type')==0)
         {
             exit('文档不属于当前用户或您不是管理员，不能编辑');
         }
         $investments=InvestmentType::orderBy('id','asc')->pluck('type','id');
         $acreagements=Acreagement::orderBy('id','asc')->pluck('type','id');
-        return view('admin.article_brandedit',compact('id','articleinfos','allnavinfos','pics','investments','acreagements','provinces'));
+        return view('admin.article_brandedit',compact('id','articleinfos','allnavinfos','pics','investments','acreagements'));
     }
 
     /**文档编辑提交处理
@@ -201,9 +205,19 @@ class ArticleController extends Controller
      */
     function PostEdit(CreateArticleRequest $request,$id)
     {
-        if ($request->brandid)
+        if (!empty($request['bdname']))
         {
-            $request['bdname']=Brandarticle::withoutGlobalScope(PublishedScope::class)->where('id',$request->brandid)->value('brandname');
+            $brandinfos=Brandarticle::withoutGlobalScope(PublishedScope::class)->where('ismake',1)->where('brandname','like','%'.$request['bdname'].'%')->first(['id','published_at']);
+            if (isset($brandinfos->id))
+            {
+                $request['brandid']=$brandinfos->id;
+                if ( Carbon::parse($brandinfos->published_at)>Carbon::now())
+                {
+                    $request['published_at']=Carbon::parse($brandinfos->published_at)->addMinutes(rand(1,300))->addSeconds(rand(1,59));
+                }
+            }else{
+                $request['brandid']=0;
+            }
         }
         $this->RequestProcess($request);
         $thisarticleinfos=Archive::withoutGlobalScope(PublishedScope::class)->findOrFail($id);
@@ -219,28 +233,22 @@ class ArticleController extends Controller
             $request['updated_at']=Carbon::now();
             $request['ispush']=1;
             Archive::withoutGlobalScope(PublishedScope::class)->findOrFail($id)->update($request->all());
-            $thisarticleurl=config('app.url').'/article/'.$thisarticleinfos->id.'.html';
-            $miparticleurl=str_replace('www.','mip.',config('app.url')).'/article/'.$thisarticleinfos->id.'.html';
-            $this->BaiduCurl(config('app.api'),$thisarticleurl,'审核后百度主动提交');
-            if ($request->xiongzhang)
-            {
-                $this->BaiduCurl(config('app.mip_api'),$miparticleurl,'审核后熊掌号天级推送');
-            }else{
-                $this->BaiduCurl(config('app.mip_history'),$miparticleurl,'审核后熊掌号周级提交');
-            }
+            $thisarticleurl=config('app.url').'/news/'.$thisarticleinfos->id.'.shtml';
+            event(new BaiduCurlLinkSubmitEvent($thisarticleurl));
             event(new ArticleCacheCreateEvent($thisarticleinfos));
             return redirect(action('Admin\ArticleController@Index'));
         }
     }
 
-    /**品牌文档编辑提交处理
-     * @param CreateBrandArticleRequest $request
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function PostBrandArticleEditor(CreateBrandArticleRequest $request,$id)
     {
         $this->RequestProcess($request);
+        /**
+         * if(isset($request['imagepics']) && empty($request['imagepics']))
+        {
+        $request['imagepics']=$this->processImagepics($request->body);
+        }
+         */
         $thisarticleinfos=Brandarticle::withoutGlobalScope(PublishedScope::class)->findOrFail($id);
         $request['write']=$thisarticleinfos->write;
         $request['dutyadmin']=$thisarticleinfos->dutyadmin;
@@ -254,15 +262,8 @@ class ArticleController extends Controller
             $request['updated_at']=Carbon::now();
             $request['ispush']=1;
             Brandarticle::withoutGlobalScope(PublishedScope::class)->findOrFail($id)->update($request->all());
-            $thisarticleurl=config('app.url').'/xiangmu/'.$thisarticleinfos->id.'.html';
-            $this->BaiduCurl(config('app.api'),$thisarticleurl,'百度主动提交');
-            $miparticleurl=str_replace('www.','mip.',config('app.url')).'/xiangmu/'.$thisarticleinfos->id.'.html';
-            if ($request->xiongzhang)
-            {
-                $this->BaiduCurl(config('app.mip_api'),$miparticleurl,'熊掌号天级推送');
-            }else{
-                $this->BaiduCurl(config('app.mip_history'),$miparticleurl,'熊掌号周级提交');
-            }
+            $thisarticleurl=config('app.url').'/xm/'.$thisarticleinfos->id.'.shtml';
+            event(new BaiduCurlLinkSubmitEvent($thisarticleurl));
             event(new BrandArticleCacheCreateEvent($thisarticleinfos));
             return redirect(action('Admin\ArticleController@Brands'));
         }
@@ -277,7 +278,7 @@ class ArticleController extends Controller
     {
         $request['keywords']=$request['keywords']?$request['keywords']:$request['title'];
         $request['click']=rand(100,900);
-        $request['description']=(!empty($request['description']))?str_limit($request['description'],180,''):str_limit(str_replace(['&nbsp;',' ','　',PHP_EOL,"\t"],'',strip_tags(htmlspecialchars_decode($request['body']))), $limit = 180, $end = '');
+        $request['description']=(!empty($request['description']))?str_limit($request['description'],180,''):str_limit(str_replace(['&nbsp;',' ','　',PHP_EOL,'\t'],'',strip_tags(htmlspecialchars_decode($request['body']))), $limit = 180, $end = '');
         $request['write']=auth('admin')->user()->name;
         $request['dutyadmin']=auth('admin')->id();
         $request['body']=str_replace('<h2></h2>','',$request->body);
@@ -314,14 +315,25 @@ class ArticleController extends Controller
         }
         //图集处理
         $request['imagepics']=rtrim($request->input('imagepics'),',');
-        /**
-         * if (Admin::where('id',auth('admin')->id())->value('type')!=1)
-        {
-        $request['ismake']=0;
-        }
-         */
         return $request;
 
+    }
+
+    /**品牌图集提取
+     * @param $content
+     * @return string
+     */
+    private function processImagepics($content)
+    {
+        preg_match_all("/<img(.*)src=\"([^\"]+)\"[^>]+>/isU", $content, $matches);
+        if (isset($matches[2]) && !empty($matches[2]) ) {
+            $imagepics = array_slice($matches[2],0,4);
+            $pics='';
+            foreach ($imagepics as $imagepic) {
+                $pics.=$imagepic.',';
+            }
+            return trim($pics,',');
+        }
     }
     /**当前用户发布的文档
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -432,7 +444,7 @@ class ArticleController extends Controller
     public function PedingBrands()
     {
         $articles = Brandarticle::withoutGlobalScope(PublishedScope::class)->where('published_at','>',Carbon::now())->latest()->paginate(30);
-        return view('admin.article',compact('articles'));
+        return view('admin.brandarticle',compact('articles'));
     }
 
     /**普通文档删除
@@ -445,9 +457,45 @@ class ArticleController extends Controller
         {
             event(new ArticleCacheDeleteEvent(Archive::withoutGlobalScope(PublishedScope::class)->where('id',$id)->first()));
             Archive::withoutGlobalScope(PublishedScope::class)->where('id',$id)->delete();
-            return '删除成功 跳转中 请稍后';
+            return '删除成功';
         }else{
-            return '无权限执行此操作！跳转中 请稍后';
+            return '无权限执行此操作！';
+        }
+    }
+
+    /**批量删除普通文档
+     * @param Request $request
+     * @return string
+     */
+    function DeleteArticles(Request $request)
+    {
+        if(auth('admin')->user()->id && auth('admin')->user()->type==1)
+        {
+            foreach (json_decode($request->ids,true) as $id){
+                event(new ArticleCacheDeleteEvent(Archive::withoutGlobalScope(PublishedScope::class)->where('id',$id)->first()));
+                Archive::withoutGlobalScope(PublishedScope::class)->where('id',$id)->delete();
+            }
+            return '删除成功';
+        }else{
+            return '无权限执行此操作！';
+        }
+    }
+
+    /**批量修改普通文档分类
+     * @param Request $request
+     * @return string
+     */
+    public function EditArticlesType(Request $request){
+        if(auth('admin')->user()->id && auth('admin')->user()->type==1)
+        {
+            foreach (json_decode($request->ids,true) as $id){
+                Archive::withoutGlobalScope(PublishedScope::class)->where('id',$id)->update(['typeid'=>$request->typeid]);
+                $thisarticleinfos=Archive::withoutGlobalScope(PublishedScope::class)->findOrFail($id);
+                event(new ArticleCacheCreateEvent($thisarticleinfos));
+            }
+            return '修改成功';
+        }else{
+            return '无权限执行此操作！';
         }
     }
 
@@ -467,6 +515,41 @@ class ArticleController extends Controller
         }
     }
 
+    /**批量删除品牌文档
+     * @param Request $request
+     * @return string
+     */
+    public function DeleteBrandArticles(Request $request)
+    {
+        if(auth('admin')->user()->id)
+        {
+            foreach (json_decode($request->ids,true) as $id) {
+                event(new BrandArticleCacheDeleteEvent(Brandarticle::withoutGlobalScope(PublishedScope::class)->where('id', $id)->first()));
+                Brandarticle::withoutGlobalScope(PublishedScope::class)->where('id', $id)->delete();
+            }
+            return '删除成功';
+        }else{
+            return '无权限执行此操作！';
+        }
+    }
+
+    /**批量修改品牌文档分类
+     * @param Request $request
+     * @return string
+     */
+    public function EditBrandarticlesType(Request $request){
+        if(auth('admin')->user()->id && auth('admin')->user()->type==1)
+        {
+            foreach (json_decode($request->ids,true) as $id){
+                Brandarticle::withoutGlobalScope(PublishedScope::class)->where('id',$id)->update(['typeid'=>$request->typeid]);
+                $thisarticleinfos=Brandarticle::withoutGlobalScope(PublishedScope::class)->findOrFail($id);
+                event(new BrandArticleCacheCreateEvent($thisarticleinfos));
+            }
+            return '修改成功';
+        }else{
+            return '无权限执行此操作！';
+        }
+    }
 
     /**文档搜索
      * @param Request $request
@@ -475,9 +558,26 @@ class ArticleController extends Controller
     function PostArticleSearch(Request $request)
     {
         $articles=Archive::withoutGlobalScope(PublishedScope::class)->where('title','like','%'.$request->input('title').'%')->latest()->paginate(30);
-        return view('admin.article',compact('articles'));
+        $title=$request->title;
+        if(!$articles->total()){
+            $this->GuardTitle($title);
+        }
+        return view('admin.article',compact('articles','title'));
     }
 
+    private function GuardTitle($title){
+        if (Storage::exists('guarded.txt'))
+        {
+            $filtertitles=array_unique(array_filter(explode(PHP_EOL,Storage::get('guarded.txt'))));
+            foreach ($filtertitles as $filtertitle)
+            {
+                if (str_contains($title,str_replace([PHP_EOL,"\r"],'',trim($filtertitle))) || str_contains(trim($filtertitle),str_replace([PHP_EOL,"\r"],'',$title)))
+                {
+                    exit($title.'违禁词，不允许发布');
+                }
+            }
+        }
+    }
 
     /** 栏目文章查看
      * @param Request $request
@@ -500,42 +600,7 @@ class ArticleController extends Controller
         return view($view,compact('articles'));
     }
 
-    /**获取地区分类
-     * @param Request $request
-     * @return mixed
-     */
-    public function GetAreas(Request $request)
-    {
-        $citys=Area::where('parentid',$request->province_id)->pluck('name_cn','id');
-        return $citys;
-    }
-    public function GetBdnames(Request $request)
-    {
-        $brandnames=Brandarticle::where('typeid',$request->typeid)->pluck('brandname','id');
-        return $brandnames;
-    }
 
-    /**百度主动推送
-     * @param $thisarticleurl
-     * @param $token
-     * @param $type
-     */
-    private function BaiduCurl($token,$thisarticleurl,$type)
-    {
-        $urls = array($thisarticleurl);
-        $ch = curl_init();
-        $options =  array(
-            CURLOPT_URL =>$token,
-            CURLOPT_POST => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POSTFIELDS => implode("\n", $urls),
-            CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
-        );
-        curl_setopt_array($ch, $options);
-        $result = curl_exec($ch);
-        Log::info($thisarticleurl.$type);
-        Log::info($result);
-    }
 
     /**重复标题检测
      * @param Request $request
@@ -543,12 +608,23 @@ class ArticleController extends Controller
      */
     public function ArticletitleCheck(Request $request)
     {
-        $title=Archive::withoutGlobalScope(PublishedScope::class)->where('title',$request->input('title'))->count();
+        $title=Archive::withoutGlobalScope(PublishedScope::class)->where('title',$request->input('title'))->value('title');
         if (!$title)
         {
             $title=Brandarticle::withoutGlobalScope(PublishedScope::class)->where('title',$request->input('title'))->value('title');
         }
-        return $title?1:0;
+        if (Storage::exists('guarded.txt'))
+        {
+            $filtertitles=array_unique(array_filter(explode(PHP_EOL,Storage::get('guarded.txt'))));
+            foreach ($filtertitles as $filtertitle)
+            {
+                if (str_contains($request->input('title'),str_replace([PHP_EOL,"\r"],'',trim($filtertitle))))
+                {
+                    $title='违禁词，不允许发布';
+                }
+            }
+        }
+        return $title;
     }
 
 }

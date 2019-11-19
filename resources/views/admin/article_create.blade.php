@@ -2,22 +2,8 @@
 @section('title')添加普通文档@stop
 @section('head')
 <link href="/adminlte/plugins/iCheck/all.css" rel="stylesheet">
-<link rel="stylesheet" href="/adminlte//plugins/daterangepicker/daterangepicker.css">
 <link rel="stylesheet" href="/adminlte/plugins/datepicker/datepicker3.css">
 <link href="/adminlte/plugins/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
-<link href="/adminlte/plugins/select2/select2.min.css" rel="stylesheet">
-<style>
-    .select2-container--default .select2-selection--single {
-        border-radius: 0px;
-    }
-    .select2-container .select2-selection--single {
-        height: 34px;
-        border: 1px solid #d2d6de;
-    }
-    .select2-container .select2-selection--single .select2-selection__rendered {
-        padding-left: 0px;
-    }
-</style>
 @stop
 @section('content')
         <!-- row -->
@@ -46,8 +32,8 @@
                         <div class="form-group col-md-12" id="checktitle">
                             {{Form::label('title', '文章标题', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
                             <div class="col-md-4 col-sm-9 col-xs-12 ">
-                                {{Form::text('title', null, array('class' => 'form-control','id'=>'title','placeholder'=>'文章标题','required'=>'required'))}}
-                                <span class="help-block" style="display: none;"><i class="fa fa-bell-o"></i>标题已存在,请勿提交重复标题</span>
+                                {{Form::text('title', null, array('class' => 'form-control','id'=>'title','placeholder'=>'文章标题'))}}
+                                <span class="help-block" style="display: none;"><i class="fa fa-bell-o"></i><em>标题已存在,请勿提交重复标题</em></span>
                             </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -72,42 +58,37 @@
                                     {{Form::checkbox('flags[]', 'a',false,array('class'=>'flat-red'))}} 特荐
                                 </label>
                             </div>
+
                         </div>
                         <div class="form-group col-md-12">
-                            {{Form::label('keywords', '文档关键字', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
+                            {{Form::label('shorttitle', '简略标题', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                                {{Form::text('keywords',null, array('class' => 'form-control','id'=>'keywords','placeholder'=>'文档关键词','required'=>'required'))}}
+                                {{Form::text('shorttitle',null, array('class' => 'form-control','id'=>'shorttitle','placeholder'=>'短标题'))}}
                             </div>
                         </div>
+
                         <div class="form-group col-md-12">
-                            {{Form::label('brandcid', '品牌所属大类', array('class' => 'col-sm-2 control-label'))}}
-                            <div class="col-md-4">
-                                {{Form::select('brandcid', $brandnavs, null,array('class'=>'form-control select2' ,'id'=>'brandcid'))}}
-                            </div>
-                        </div>
-                        <div class="form-group col-md-12 ">
-                            {{Form::label('brandtypeid', '品牌所属子类', array('class' => 'col-sm-2 control-label'))}}
-                            <div class="col-md-4">
-                                {{Form::select('brandtypeid', [], null,array('class'=>'form-control select2' ,'id'=>'brandtypeid'))}}
-                            </div>
-                        </div>
-                        <div class="form-group col-md-12">
-                            {{Form::label('brandid', '文档所属品牌', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
+                            {{Form::label('tags', 'tag标签', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                                {{Form::select('brandid', [], null,array('class'=>'form-control select2','id'=>'brandid'))}}
+                                {{Form::text('tags', null, array('class' => 'form-control','id'=>'tags','placeholder'=>'文档tag标签'))}}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            {{Form::label('keywords', '关键字', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                                {{Form::text('keywords',null, array('class' => 'form-control','id'=>'keywords','placeholder'=>'文档关键词'))}}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            {{Form::label('bdname', '所属品牌', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                                {{Form::text('bdname',null, array('class' => 'form-control','id'=>'keywords','placeholder'=>'所属品牌'))}}
                             </div>
                         </div>
                         <div class="form-group col-md-12 ">
                             {{Form::label('typeid', '文章所属栏目', array('class' => 'col-sm-2 control-label'))}}
                             <div class="col-md-4">
                                 {{Form::select('typeid', $allnavinfos, null,array('class'=>'form-control select2'))}}
-                            </div>
-                        </div>
-                        <div class="form-group col-md-12 ">
-                            {{Form::label('xiongzhang', '熊掌号推送', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
-                            <div class="radio col-md-4 col-sm-9 col-xs-12">
-                                {{Form::radio('xiongzhang', '1', false,array('class'=>'flat-red'))}} 熊掌号天级推送
-                                {{Form::radio('xiongzhang', '0', true,array('class'=>'flat-red'))}}熊掌号周级推送
                             </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -135,7 +116,7 @@
 
                     </div>
                     <div class="timeline-footer">
-                        <button class="btn btn-primary btn-xs">Quick submit</button>
+                        <button class="btn btn-primary btn-xs">Read more</button>
                     </div>
                 </div>
             </li>
@@ -351,15 +332,8 @@
 <script src="/adminlte/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
 <script src="/adminlte/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
 <script src="/adminlte/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
-<script src="/adminlte/plugins/select2/select2.full.min.js"></script>
-<script src="/adminlte/plugins/select2/i18n/zh-CN.js"></script>
-<script src="/adminlte/validator.js"></script>
 <script>
     $(function () {
-        $('.select2').select2({language: "zh-CN"});
-        getsonTypes("/admin/getsontypes",{"topid":$("#brandcid").select2("val")},"#brandtypeid");
-        $("#brandcid").on("change",function(){getsonTypes("/admin/getsontypes",{"topid":$("#brandcid").select2("val")},"#brandtypeid")});
-        $("#brandtypeid").on("change",function(){getBdname('/admin/getbdname',{"typeid":$("#brandtypeid").select2("val")},"#brandid")});
         $('#datepicker').datepicker({autoclose: true,language: 'zh-CN',todayHighlight: true });
         $('.basic_info input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({ checkboxClass: 'icheckbox_flat-green', radioClass: 'iradio_flat-green'});
         $("#input-image-1").fileinput({
@@ -377,7 +351,7 @@
             $('#kv-success-box').html('上传成功！');
             $('#kv-success-modal').modal('show');
             $('.kv-file-remove').hide();
-            $("#imagepics").val($("#imagepics").val()+params.response.src+',');
+            $("#imagepics").val($("#imagepics").val()+params.response.link+',');
         });
     });
 </script>
@@ -390,10 +364,12 @@
                 {type:"POST",url:"/admin/article/titlecheck",data:{"title":$("#checktitle input").val()},
                     datatype: "html",
                     success:function (response, stutas, xhr) {
-                        if (response==1)
+                        if (response=='违禁词，不允许发布' || response==$("#checktitle input").val())
                         {
                             $("#checktitle").addClass('has-error');
+                            $("#checktitle span em").html("品牌为违禁词或标题已存在，禁止发布");
                             $("#checktitle span").css("display","block");
+
                         }else {
                             $("#checktitle").removeClass('has-error').addClass('has-success');
                             $("#checktitle span").css("display","none");
@@ -402,46 +378,6 @@
                 });
         }
     });
-    function getLocalData () {
-        var arrs=[ue];
-        for (i=0;i<arrs.length;i++)
-        {
-            if(!arrs[i].hasContents())
-            {
-                body=arrs[i].execCommand( "getlocaldata" );
-                arrs[i].setContent(body);
-            }
-        }
-    }
-    function getsonTypes(url,datas,element)
-    {
-        $.ajax(
-            {type:"POST",url:url,data:datas,
-                datatype: "json",
-                success:function (response) {
-                    var contents='';
-                    for (type in response) {
-                        contents += '<option value="' + type + '">' + response[type] + '</option>';
-                    }
-                    $(element).html(contents);
-                    getBdname('/admin/getbdname',{"typeid":$("#brandtypeid").select2("val")},"#brandid")
-                }
-            });
-    }
-    function getBdname(url,datas,element)
-    {
-        $.ajax(
-            {type:"POST",url:url,data:datas,
-                datatype: "json",
-                success:function (response) {
-                    var contents='';
-                    for (type in response) {
-                        contents += '<option value="' + type + '">' + response[type] + '</option>';
-                    }
-                    $(element).html(contents);
-                }
-            });
-    }
 </script>
 @stop
 

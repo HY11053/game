@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\AdminModel\Admin;
 use App\AdminModel\Archive;
 use App\AdminModel\Arctype;
 use App\AdminModel\Area;
@@ -18,14 +17,12 @@ use Log;
 
 class CheckToolsController extends Controller
 {
-    public function AppletcheakUrls()
+    public function __construct()
     {
-        Archive::where('created_at','>',Carbon::today())->where('created_at','<',Carbon::tomorrow())->orderBy('id')->chunk(100, function($carticles) {
-            foreach ($carticles as $carticle)
-            {
-                echo "pages/article/article?index=".$carticle->id.'<br/>';
-            }
-        });
+        $this->middleware('auth.admin:admin');
+    }
+    public function cheakUrls()
+    {
         Brandarticle::where('created_at','>',Carbon::today())->where('created_at','<',Carbon::tomorrow())->orderBy('id')->chunk(100, function($articles) {
             foreach ($articles as $article)
             {
@@ -33,16 +30,36 @@ class CheckToolsController extends Controller
             }
         });
 
+        Archive::where('created_at','>',Carbon::today())->where('created_at','<',Carbon::tomorrow())->orderBy('id')->chunk(100, function($carticles) {
+            foreach ($carticles as $carticle)
+            {
+                echo "pages/article/article?index=".$carticle->id.'<br/>';
+            }
+        });
+
+
         /**
-         *
-         *
-         *  Arctype::where('mid',1)->orderBy('id')->chunk(100, function($categories) {
+         * Arctype::where('mid',1)->orderBy('id')->chunk(100, function($categories) {
         foreach ($categories as $category)
         {
-        //echo "pages/blists/blists?real_path=".$category->real_path.'<br/>';
-        Storage::append('article-appltes3.txt'," pages/paihangbang/paihangbang?real_path=".$category->real_path);
+        echo "pages/blists/blists?real_path=".$category->real_path.'<br/>';
         }
         });
+         *   Brandarticle::orderBy('id')->chunk(100, function($articles) {
+        foreach ($articles as $article)
+        {
+        echo "http://www.jjedu.com.cn/xm/".$article->id.'.shtml'.' '."http://m.jjedu.com.cn/xm/".$article->id.'.shtml'.'<br/>';
+        }
+        });
+        Archive::orderBy('id')->chunk(100, function($carticles) {
+        foreach ($carticles as $carticle)
+        {
+        echo "http://www.jjedu.com.cn/news/".$carticle->id.'.shtml'.' '."http://m.jjedu.com.cn/news/".$carticle->id.'.shtml'.'<br/>';
+        }
+        });
+         */
+
+        /**
          * Arctype::where('mid',1)->orderBy('id')->chunk(100, function($categories) {
         foreach ($categories as $category)
         {
@@ -238,18 +255,49 @@ class CheckToolsController extends Controller
 
         public function BrandnameCr()
         {
-            /**
-             * $brands=Brandcontainer::where('num','>',4)->where('num','<',10)->where('status','<>',1)->orderBy('num','desc')->get();
+            set_time_limit(0);
+            $brands=Brandarticle::withoutGlobalScope(PublishedScope::class)->orderBy('id','desc')->get(['brandname']);
             foreach ($brands as $brand) {
-            if (Brandarticle::withoutGlobalScope(PublishedScope::class)->where('title','like','%'.str_replace('培训中心','',$brand->brand).'%')->value('brandname'))
-            {
-            Brandcontainer::where('id',$brand->id)->update(['status'=>1]);
-            }else{
-            Storage::disk('public')->append('nobrand.txt', $brand->brand.'--'.$brand->num);
-            }
+                Storage::disk('public')->append('scbrands.txt', $brand->brandname);
             }
             echo '检测完毕';
-             */
-            Admin::whereIn('id',[1,30])->update(['typeid'=>1]);
+        }
+
+        public function ProcessTables()
+        {
+            $ids = Storage::get('id.txt');
+            $fycontents = explode(PHP_EOL,Storage::get('fy.txt'));
+            $lrcontents = explode(PHP_EOL,Storage::get('lr.txt'));
+            foreach (explode(PHP_EOL,$ids) as $id)
+            {
+                $content=Brandarticle::withoutGlobalScope(PublishedScope::class)->where('id',$id)->value('body');
+                $explodecontents=explode('<h2',$content);
+                foreach ($explodecontents as $index=>$explodecontent)
+                {
+                    if (str_contains($explodecontent,'</h2>'))
+                    {
+                        $explodecontent='<h2'.$explodecontent;
+                        $explodecontents[$index]=$explodecontent;
+                    }
+                }
+                foreach ($explodecontents as $explodecontent)
+                {
+                    if (str_contains($explodecontent,'<table'))
+                    {
+                        if (preg_match('#<h2.*?</h2>#',$explodecontent,$match))
+                        {
+                            if (str_contains($match[0],'钱') || str_contains($match[0],'费') || str_contains($match[0],'成本'))
+                            {
+                                $content=str_replace($explodecontent,$fycontents[array_rand($fycontents)],$content);
+                            }elseif (str_contains($match[0],'利润')){
+                                $content=str_replace($explodecontent,$lrcontents[array_rand($lrcontents)],$content);
+                            }
+                        }
+                    }
+                }
+                $content=str_replace('{}',Brandarticle::where('id',$id)->value('brandname'),$content);
+                Brandarticle::where('id',$id)->update(['body'=>$content]);
+            }
+            echo '替换表格完毕';
         }
 }

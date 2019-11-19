@@ -7,7 +7,7 @@
 @section('content')
     <h3>工作链接生成</h3>
     @foreach($links as $link)
-        <li>http://www.jjedu.com.cn/xm/{{$link->id}}.html http://m.jjedu.com.cn/xm/{{$link->id}}.html</li>
+        <li>https://www.jjedu.com.cn/xm/{{$link->id}}.shtml https://m.jjedu.com.cn/xm/{{$link->id}}.shtml</li>
     @endforeach
 @stop
 

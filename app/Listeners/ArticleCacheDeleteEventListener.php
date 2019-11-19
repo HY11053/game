@@ -4,8 +4,8 @@ namespace App\Listeners;
 
 use App\AdminModel\Archive;
 use App\AdminModel\Arctype;
-use App\AdminModel\Area;
 use App\AdminModel\Brandarticle;
+use App\AdminModel\InvestmentType;
 use App\Events\ArticleCacheDeleteEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,7 +35,7 @@ class ArticleCacheDeleteEventListener
         //清除当前缓存
         Cache::forget('thisarticleinfos_'.$id);
         //获取当前栏目信息并缓存
-        Cache::remember('thistypeinfos_'.$event->archive->typeid, config('app.cachetime')+rand(60,60*24), function() use($event){
+        $thistypeinfo=Cache::remember('thistypeinfos_'.$event->archive->typeid, config('app.cachetime')+rand(60,60*24), function() use($event){
             return Arctype::where('id',$event->archive->typeid)->first();
         });
         //清除上一篇文档和下一篇文档的上下篇缓存
@@ -54,76 +54,76 @@ class ArticleCacheDeleteEventListener
                 return Brandarticle::where('id',$event->archive->brandid)->first();
             });
         }
-        //获取当前文档所属品牌分类、父分类及品牌所属地区
+        //获取当前文档所属品牌分类
         if (isset($thisarticlebrandinfos) && !empty($thisarticlebrandinfos))
         {
+            //清除当前缓存 重新写入 兼容Update
+            Cache::forget('thistypeinfos_'.$thisarticlebrandinfos->typeid);
+            //当前文档所属品牌所属分类
             $thisbrandtypeinfo=Cache::remember('thistypeinfos_'.$thisarticlebrandinfos->typeid, config('app.cachetime')+rand(60,60*24), function() use($thisarticlebrandinfos){
                 return  Arctype::where('id',$thisarticlebrandinfos->typeid)->first();
             });
-            //当前文档所属品牌所属分类的父分类
-            $thisbrandtypecidinfo=Cache::remember('thistypeinfos_'.$thisbrandtypeinfo->reid, config('app.cachetime')+rand(60,60*24), function() use($thisbrandtypeinfo){
-                return Arctype::where('id',$thisbrandtypeinfo->reid)->first();
-            });
-            //当前文档所属品牌所属地区
-            Cache::remember('thisarticlebradarea'.$thisarticlebrandinfos->city_id, config('app.cachetime')+rand(60,60*24), function() use($thisarticlebrandinfos){
-                return Area::where('id',$thisarticlebrandinfos->city_id)->first(['name_cn']);
-            });
+        }
+        //获取当前文档相关品牌文档，不足将用当前文档所属品牌分类下品牌文档补足
+        if (isset($thisarticlebrandinfos) && !empty($thisarticlebrandinfos))
+        {
             Cache::forget('thisarticleinfos_brandnews'.$thisarticlebrandinfos->id);
             $latestbrandnews=Cache::remember('thisarticleinfos_brandnews'.$thisarticlebrandinfos->id, config('app.cachetime')+rand(60,60*24), function() use($event,$thisarticlebrandinfos){
                 $brandnews=Archive::where('brandid',$event->archive->brandid)->where('id','<>',$event->archive->id)->take(10)->latest()->get(['id','title','created_at','litpic']);
                 if ($brandnews->count()<10)
                 {
-                    $completionnews=Archive::where('brandtypeid',$event->archive->brandtypeid)->whereNotIn('id',Archive::where('brandid',$event->archive->brandid)->pluck('id'))->take(10-($brandnews->count()))->latest()->get(['id','title','created_at','litpic']);
+                    $completionnews=Archive::whereIn('brandid',Brandarticle::where('typeid',$thisarticlebrandinfos->typeid)->pluck('id'))->whereNotIn('id',Archive::where('brandid',$event->archive->brandid)->pluck('id'))->where('id','<>',$event->archive->id)->take(10-($brandnews->count()))->latest()->get(['id','title','created_at','litpic']);
                 }else{
                     $completionnews=collect([]);
                 }
                 $latestbrandnews=collect([$brandnews,$completionnews])->collapse();
                 return $latestbrandnews;
             });
-            Cache::forget('brandtypenews'.$thisarticlebrandinfos->id);
-            Cache::remember('brandtypenews'.$thisarticlebrandinfos->id, config('app.cachetime')+rand(60,60*24), function() use($event,$latestbrandnews,$thisarticlebrandinfos){
+            Cache::forget('brandtypenews'.$event->archive->brandid);
+            Cache::remember('brandtypenews'.$event->archive->brandid, config('app.cachetime')+rand(60,60*24), function() use($event,$latestbrandnews,$thisarticlebrandinfos){
                 $notids=[];
                 foreach ($latestbrandnews as $latestbrandnew)
                 {
                     $notids[]=$latestbrandnew->id;
                 }
-                return Archive::where('brandtypeid',$event->archive->brandtypeid)->where('id','<>',$event->archive->id)->whereNotIn('id',$notids)->take(12)->latest('created_at')->get(['id','title']);
+                return Archive::whereIn('brandid',Brandarticle::where('typeid',$thisarticlebrandinfos->typeid)->pluck('id'))->whereNotIn('id',$notids)->where('id','<>',$event->archive->id)->take(5)->latest('created_at')->get(['id', 'title','litpic','created_at']);
             });
-
+            Cache::remember('cnewslists'.$thistypeinfo->id,  rand(10,60), function() use($thisbrandtypeinfo,$event){
+                return Archive::whereIn('brandid',Brandarticle::where('typeid',$thisbrandtypeinfo->id)->latest()->pluck('id'))->where('id','<>',$event->archive->id)->take(7)->latest()->get();
+            });
         }else{
             Cache::forget('thisarticleinfos_brandnews'.$event->archive->typeid);
             Cache::remember('thisarticleinfos_brandnews'.$event->archive->typeid, config('app.cachetime')+rand(60,60*24), function() use($event) {
                 return Archive::where('typeid', $event->archive->typeid)->where('id','<>',$event->archive->id)->take(10)->latest()->get(['id', 'title', 'created_at','litpic']);
             });
+
             Cache::forget('typenews'.$event->archive->typeid);
             Cache::remember('typenews'.$event->archive->typeid,  config('app.cachetime')+rand(60,60*24), function() use($event) {
-                return  Archive::where('typeid', $event->archive->typeid)->where('id','<>',$event->archive->id)->take(12)->latest('created_at')->get(['id', 'title']);
+                return  Archive::where('typeid', $event->archive->typeid)->where('id','<>',$event->archive->id)->take(5)->latest('created_at')->get(['id', 'title','litpic','created_at']);
+            });
+            //投资分类获取并缓存
+            Cache::remember('investment_types',  config('app.cachetime')+rand(60,60*24), function(){
+                return InvestmentType::pluck('type','id');
             });
         }
-        //通用页面缓存清理
-        Cache::forget('latestnews');
-        Cache::remember('latestnews',config('app.cachetime')+rand(60,60*24), function() use($event){
-            return Archive::latest()->take(12)->where('id','<>',$event->archive->id)->orderBy('id','desc')->get(['id','title','created_at']);
+        //清除列表页文档调用缓存
+        Cache::forget('hotnew'.$thistypeinfo->id);
+        Cache::remember('hotnew'.$thistypeinfo->id, 60*24*365, function() use ($thistypeinfo,$event){
+            return Archive::where('typeid',$thistypeinfo->id)->where('id','<>',$event->archive->id)->where('flags','like','%h%')->latest()->first(['id','title','litpic']);
         });
-        Cache::forget('list_latestnews');
-        Cache::remember('list_latestnews',config('app.cachetime')+rand(60,60*24), function() use($event){
-            return Archive::latest()->take(19)->orderBy('id','desc')->where('id','<>',$event->archive->id)->get(['id','title','created_at']);
+        Cache::forget('cnewtop'.$thistypeinfo->id);
+        Cache::remember('cnewtop'.$thistypeinfo->id, 60*24*365, function() use ($thistypeinfo,$event){
+            return Archive::where('typeid',$thistypeinfo->id)->where('flags','like','%'.'c'.'%')->where('id','<>',$event->archive->id)->latest()->first(['title','id','description']);
         });
-        Cache::forget('typebrandnews'.$thisbrandtypeinfo->id);
-        Cache::remember('typebrandnews'.$thisbrandtypeinfo->id,  config('app.cachetime')+rand(60,60*24), function() use($thisbrandtypeinfo,$event){
-            $latestbrandnews=Archive::where('brandtypeid',$thisbrandtypeinfo->id)->where('id','<>',$event->archive->id)->take(10)->latest()->get(['id','title','created_at']);
-            return $latestbrandnews;
+        Cache::forget('cnewtops'.$thistypeinfo->id);
+        Cache::remember('cnewtops'.$thistypeinfo->id, 60*24*365, function() use ($thistypeinfo,$event){
+            return Archive::where('typeid',$thistypeinfo->id)->where('flags','like','%'.'c'.'%')->skip(1)->where('id','<>',$event->archive->id)->take(10)->latest()->get(['id','title']);
         });
-        Cache::forget('typebrandnews'.$thisbrandtypecidinfo->id);
-        Cache::remember('typebrandnews'.$thisbrandtypecidinfo->id,  config('app.cachetime')+rand(60,60*24), function() use($thisbrandtypecidinfo,$event){
-            $latestbrandnews=Archive::whereIn('brandtypeid',Arctype::where('mid',1)->where('reid',$thisbrandtypecidinfo->id)->pluck('id'))->where('id','<>',$event->archive->id)->orderBy('id','desc')->take(10)->latest()->get(['id','title','created_at']);
-            return $latestbrandnews;
+        Cache::forget('platestnews'.$thistypeinfo->id);
+        Cache::remember('platestnews'.$thistypeinfo->id, config('app.cachetime')+rand(60,60*24), function() use($thistypeinfo,$event){
+            return Archive::where('typeid','<>',$thistypeinfo->id)->take(7)->latest()->get();
         });
-        Cache::forget('xmtypebrandnews');
-        Cache::remember('xmtypebrandnews',  config('app.cachetime')+rand(60,60*24), function() use($event){
-            $latestbrandnews=Archive::take(10)->latest()->where('id','<>',$event->archive->id)->get(['id','title','created_at']);
-            return $latestbrandnews;
-        });
+        Cache::forget('cnewslists'.$thistypeinfo->id);
     }
 
     protected function getPrevArticleId($id)
@@ -134,5 +134,4 @@ class ArticleCacheDeleteEventListener
     {
         return Archive::where('id', '>', $id)->orderBy('id','asc')->value('id');
     }
-
 }

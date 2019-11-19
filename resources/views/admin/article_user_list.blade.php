@@ -88,9 +88,9 @@
                                 <td>{{$article->click}}</td>
                                 <td>@if($article->ismake) 已审核 @else 未审核 @endif</td>
                               @if($article->mid==0)
-                                    <td class="astyle"><span class="label label-success"><a href="/article/{{$article->id}}.html" target="_blank">预览</a></span><span class="label label-warning"></span></td>
+                                    <td class="astyle"><span class="label label-success"><a href="/news/{{$article->id}}.shtml" target="_blank">预览</a></span><span class="label label-warning"></span></td>
                                 @elseif($article->mid==1)
-                                    <td class="astyle"><span class="label label-success"><a href="/xiamgmu/{{$article->id}}.html" target="_blank">预览</a></span><span class="label label-warning"></span></td>
+                                    <td class="astyle"><span class="label label-success"><a href="/xm/{{$article->id}}.shtml" target="_blank">预览</a></span><span class="label label-warning"></span></td>
                                 @endif
                             </tr>
                         @endforeach

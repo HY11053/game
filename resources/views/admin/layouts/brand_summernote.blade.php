@@ -1,4 +1,3 @@
-{{---
 <li>
     <i class="fa fa-user bg-aqua"></i>
     <div class="timeline-item">
@@ -9,12 +8,11 @@
         </h3>
     </div>
 </li>
----}}
 <li>
     <i class="fa fa-file-text bg-maroon"></i>
     <div class="timeline-item">
         <span class="time"><i class="fa fa-circle-o-notch"></i> 此处为必填内容</span>
-        <h3 class="timeline-header"><a href="#">项目内容详情</a> 内容编辑</h3>
+        <h3 class="timeline-header"><a href="#">项目首页</a> 内容编辑</h3>
         <div class="timeline-body">
             <div class="wrapper-content">
                 <div class="row">

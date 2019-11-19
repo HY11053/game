@@ -175,7 +175,7 @@
                     <!-- /.tab-pane -->
                     <div class=" tab-pane" id="activity">
                         @include('admin.layouts.summernote')
-                        <div style="display: none">{{Form::textarea('contents', null, array('id'=>'lawsContent'))}}</div>
+                        <div style="display: none">{{Form::textarea('body', null, array('id'=>'lawsContent'))}}</div>
 
                     </div>
                     <!-- /.tab-pane -->

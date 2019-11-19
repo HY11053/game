@@ -10,1394 +10,115 @@
     <meta name="renderer" content="webkit">
     <!-- UC & QQ 强制竖屏 -->
     <link rel="stylesheet" href="/frontend/css/webstatic.css" />
-    <link rel="stylesheet" href="https://aipage.bce.baidu.com/static/aipage/page/preview/client_63abdd7.css" />
+    <link rel="stylesheet" href="/frontend/css/css.css" />
     <!--THEME_STYLE_PLACEHOLDER-->
     <!--自定义头部-->
     <style id="custom-theme">
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
-        .uk-h1,
-        .uk-h2,
-        .uk-h3,
-        .uk-h4,
-        .uk-h5,
-        .uk-h6,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei";
-        }
-        /* ========================================================================
-   Component: Base
- ========================================================================== */
-        /*
- * 1. Set `font-size` to support `rem` units
- *    Not using `font` property because a leading hyphen (e.g. -apple-system) causes the font to break in IE11 and Edge
- * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
- * 3. Style
- */
-        html {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 1.5;
-            /* 2 */
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            /* 3 */
-            color: #666666;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
-        }
-        /*
-   * Removes default margin.
-   */
-        body {
-            margin: 0;
-            font-size: 14px;
-            color: #666666;
-            background-color: #ffffff;
-        }
-        /* Links
-   ========================================================================== */
-        /*
-   * 1. Remove the gray background on active links in IE 10.
-   * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
-   */
-        a {
-            /* 1 */
-            background-color: transparent;
-            /* 2 */
-            -webkit-text-decoration-skip: objects;
-        }
-        /*
-   * Remove the outline on focused links when they are also active or hovered
-   */
-        a:active,
-        a:hover {
-            outline: none;
-        }
-        /*
-   * Style
-   */
-        a,
-        .uk-link {
-            color: #1e87f0;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        a:hover,
-        .uk-link:hover {
-            color: #0f6ecd;
-        }
-        /* Text-level semantics
-   ========================================================================== */
-        /*
-   * 1. Remove the bottom border in Firefox 39-.
-   * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
-   */
-        abbr[title] {
-            border-bottom: none;
-            /* 1 */
-            text-decoration: underline;
-            /* 2 */
-            text-decoration: underline dotted;
-            /* 2 */
-        }
-        /*
-   * 1. Prevent the duplicate application of `bolder` by the next rule in Safari 6.
-   * 2. Add the correct font weight in Chrome, Edge, and Safari.
-   */
-        /* 1 */
-        b,
-        strong {
-            font-weight: inherit;
-        }
-        /* 2 */
-        b,
-        strong {
-            font-weight: bolder;
-        }
-        /*
-   * 1. Correct the odd `em` font sizing in all browsers.
-   * 2. Consolas has a better baseline in running text compared to `Courier`
-   * 3. Style
-   */
-        :not(pre) > code,
-        :not(pre) > kbd,
-        :not(pre) > samp {
-            /* 1 */
-            font-size: 11px;
-            /* 2 */
-            font-family: Consolas, monaco, monospace;
-            /* 3 */
-            color: #435DBA;
-            white-space: nowrap;
-            padding: 2px 6px;
-            border: 1px solid #EBEBED;
-            border-radius: 3px;
-        }
-        /*
-   * Emphasize
-   */
-        em {
-            color: #0f6ecd;
-        }
-        /* Headings
-   ========================================================================== */
-        h1,
-        .uk-h1,
-        h2,
-        .uk-h2,
-        h3,
-        .uk-h3,
-        h4,
-        .uk-h4,
-        h5,
-        .uk-h5,
-        h6,
-        .uk-h6 {
-            color: #333333;
-        }
-        /* Blockquotes
-   ========================================================================== */
-        blockquote {
-            color: #333333;
-        }
-        /* Preformatted text
-   ========================================================================== */
-        /*
-   * 1. Contain overflow in all browsers.
-   * 2. Override UA
-   */
-        pre {
-            background: #ffffff;
-        }
-        pre code {
-            font-family: Consolas, monaco, monospace;
-        }
-        /* Selection pseudo-element
-   ========================================================================== */
-        ::-moz-selection {
-            background: #1e87f0;
-            text-shadow: none;
-        }
-        ::selection {
-            background: #1e87f0;
-            text-shadow: none;
-        }
-        /* ========================================================================
-     Component: Link
-   ========================================================================== */
-        /* Muted
-   ========================================================================== */
-        a.uk-link-muted,
-        .uk-link-muted a {
-            color: #999999;
-        }
-        a.uk-link-muted:hover,
-        .uk-link-muted a:hover {
-            color: #666666;
-        }
-        /* Text
-   ========================================================================== */
-        /*
-   * `!important` needed to override inverse component
-   */
-        a.uk-link-text:not(:hover),
-        .uk-link-text a:not(:hover) {
-            color: inherit !important;
-        }
-        a.uk-link-text:hover,
-        .uk-link-text a:hover {
-            color: #999999;
-        }
-        .uk-heading-primary {
-            color: #333333;
-        }
-        /* Hero
-   ========================================================================== */
-        .uk-heading-hero {
-            color: #333333;
-        }
-        /*
-   * 1. Using `inline-block` to make it work with text alignment
-   * 2. Center vertically
-   * 3. Style
-   */
-        .uk-heading-bullet::before {
-            content: "";
-            border-left: 4px solid #1e87f0;
-        }
-        /* Small
-   ========================================================================== */
-        /*
-   * Reset child height, caused by `inline-block`
-   */
-        .uk-divider-small {
-            line-height: 0;
-        }
-        .uk-divider-small::after {
-            border-top: 2px solid #1e87f0;
-        }
-        /* ========================================================================
-     Component: List
-   ========================================================================== */
-        .uk-list,
-        .ap-child-list > ul {
-            padding: 0;
-            list-style: none;
-        }
-        .uk-list-striped > li:nth-of-type(odd) {
-            background: #f8f8f8;
-        }
-        /* ========================================================================
-     Component: Description list
-   ========================================================================== */
-        /*
-   * Term
-   */
-        .uk-description-list > dt {
-            color: #333333;
-        }
-        .uk-description-list > dd {
-            font-size: 16px;
-        }
-        /* Caption
-   ========================================================================== */
-        .uk-table caption {
-            color: #999999;
-        }
-        /*
-   * Striped
-   */
+        .uk-h1,.uk-h2,.uk-h4, .uk-h5,h1,h2,h3,h4,h5,h6 {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei";}
+        html {font-size: 16px; font-weight: 400;line-height: 1.5;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;color: #666666;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;text-rendering: optimizeLegibility;}
+        body {margin: 0;font-size: 14px;color: #666666;background-color: #ffffff;}
+        a {background-color: transparent;-webkit-text-decoration-skip: objects;}
+        a:active,a:hover {outline: none;}
+        a{color: #1e87f0;text-decoration: none;cursor: pointer;}
+        a:hover{color: #0f6ecd;}
+        abbr[title] {border-bottom: none; text-decoration: underline;text-decoration: underline dotted; }
+        b,strong {font-weight: inherit;}
+        b,strong {font-weight: bolder;}
+        :not(pre) > code,:not(pre) > kbd,:not(pre) > samp {font-size: 11px;font-family: Consolas, monaco, monospace; color: #435DBA; white-space: nowrap; padding: 2px 6px; border: 1px solid #EBEBED; border-radius: 3px; }
+        em {  color: #0f6ecd;}
+        h1, .uk-h1, h2, .uk-h2,h3, .uk-h3, h4,.uk-h4,h5,.uk-h5,  h6, .uk-h6 {color: #333333; }
+        blockquote { color: #333333; }
+        pre { background: #ffffff;}
+        pre code { font-family: Consolas, monaco, monospace;}
+        ::-moz-selection { background: #1e87f0; text-shadow: none; }
+        ::selection { background: #1e87f0; text-shadow: none;}
+        .ap-child-list > ul { padding: 0; list-style: none;}
+        .uk-list-striped > li:nth-of-type(odd) { background: #f8f8f8;}
+        .uk-description-list > dt {color: #333333;}
+        .uk-description-list > dd {font-size: 16px;}
+        .uk-table caption { color: #999999;}
         .uk-table-striped > tr:nth-of-type(odd),
-        .uk-table-striped tbody tr:nth-of-type(odd) {
-            background: #f8f8f8;
-        }
-        /* Style modifiers
-   ========================================================================== */
-        /*
-   * Link
-   */
-        .uk-icon-link {
-            color: #333333;
-        }
-        .uk-icon-link:hover,
-        .uk-icon-link:focus {
-            color: #1e87f0;
-            outline: none;
-        }
-        /*
-   * Button
-   * 1. Center icon vertically and horizontally
-   */
-        .uk-icon-button {
-            background: #ffffff;
-            color: #333333;
-        }
+        .uk-table-striped tbody tr:nth-of-type(odd) {background: #f8f8f8;}
+        .uk-button-default {background-color: #ffffff;color: #333333;}
         /* Hover + Focus */
-        .uk-icon-button:hover,
-        .uk-icon-button:focus {
-            background-color: #ffffff;
-            color: #1e87f0;
-            outline: none;
-        }
-        /* OnClick + Active */
-        .uk-icon-button:active,
-        .uk-active > .uk-icon-button {
-            background-color: #1e87f0;
-            color: #ffffff;
-        }
-        /* Thumb
-   ========================================================================== */
-        /*
-   * 1. Reset
-   * 2. Style
-   */
-        /* Webkit */
-        .uk-range::-webkit-slider-thumb {
-            background: #666666;
-        }
-        /* Firefox */
-        .uk-range::-moz-range-thumb {
-            background: #666666;
-        }
-        /* Edge */
-        .uk-range::-ms-thumb {
-            /* 1 */
-            margin-top: 0;
-        }
-        /* IE11 */
-        .uk-range::-ms-thumb {
-            background: #666666;
-        }
-        .uk-input,
-        .uk-select,
-        .uk-textarea {
-            background: #ffffff;
-            color: #666666;
-        }
-        /* Focus */
-        .uk-input:focus,
-        .uk-select:focus,
-        .uk-textarea:focus {
-            outline: none;
-            background-color: #ffffff;
-            color: #333333;
-            border-color: #333333 !important;
-        }
-        /* Disabled */
-        .uk-input:disabled,
-        .uk-select:disabled,
-        .uk-textarea:disabled {
-            background-color: #f8f8f8;
-            color: #999999;
-        }
-        /*
-   * Placeholder
-   */
-        .uk-input:-ms-input-placeholder {
-            color: #999999 !important;
-        }
-        .uk-input::-moz-placeholder {
-            color: #999999;
-        }
-        .uk-input::-webkit-input-placeholder {
-            color: #999999;
-        }
-        .uk-textarea:-ms-input-placeholder {
-            color: #999999 !important;
-        }
-        .uk-textarea::-moz-placeholder {
-            color: #999999;
-        }
-        .uk-textarea::-webkit-input-placeholder {
-            color: #999999;
-        }
-        .uk-form-danger,
-        .uk-form-danger:focus {
-            color: #f0506e;
-            border-color: #f0506e !important;
-        }
-        /*
-   * Success
-   */
-        .uk-form-success,
-        .uk-form-success:focus {
-            color: #32d296;
-            border-color: #32d296 !important;
-        }
-        /*
-   * Blank
-   */
-        .uk-form-blank {
-            background: none;
-            border-color: transparent !important;
-        }
-        .uk-form-blank:focus {
-            border-color: #EBEBED !important;
-            border-style: dashed;
-        }
-        /*
-   * Checked
-   */
-        .uk-radio:checked,
-        .uk-checkbox:checked,
-        .uk-checkbox:indeterminate {
-            background-color: #1e87f0;
-            border-color: transparent;
-        }
-        /* Label
-   ========================================================================== */
-        .uk-form-label {
-            color: #333333;
-        }
-        /* Icons
-   ========================================================================== */
-        .uk-form-icon {
-            color: #999999;
-        }
-        /*
-   * Required for `a`.
-   */
-        .uk-form-icon:hover {
-            color: #666666;
-        }
-        /* OnClick + Active */
-        /* Style modifiers
-   ========================================================================== */
-        /*
-   * Default
-   */
-        .uk-button-default {
-            background-color: #ffffff;
-            color: #333333;
-        }
-        /* Hover + Focus */
-        .uk-button-default:hover,
-        .uk-button-default:focus {
-            background-color: #ffffff;
-            color: #1e87f0;
-        }
-        /* OnClick + Active */
+        .uk-button-default:hover,.uk-button-default:focus {background-color: #ffffff;color: #1e87f0;}
         .uk-button-default:active,
-        .uk-button-default.uk-active {
-            background-color: #1e87f0;
-            color: #ffffff;
-        }
-        /*
-   * Primary
-   */
-        .uk-button-primary {
-            background-color: #1e87f0;
-            color: #ffffff;
-        }
-        /* Hover + Focus */
-        .uk-button-primary:hover,
-        .uk-button-primary:focus {
-            background-color: #222222;
-            color: #ffffff;
-        }
-        /* OnClick + Active */
-        .uk-button-primary:active,
-        .uk-button-primary.uk-active {
-            color: #ffffff;
-        }
-        /*
-   * Secondary
-   */
-        .uk-button-secondary {
-            color: #666666;
-            border: 1px solid #222222;
-        }
-        /* OnClick + Active */
-        .uk-button-secondary:active,
-        .uk-button-secondary.uk-active {
-            background-color: #1e87f0;
-            color: #ffffff;
-            border-color: #1e87f0;
-        }
-        /*
-   * Danger
-   */
-        .uk-button-danger {
-            background-color: transparent;
-            color: #f0506e;
-            border: 1px solid #f0506e;
-        }
-        /* Hover + Focus */
-        .uk-button-danger:hover,
-        .uk-button-danger:focus {
-            background-color: transparent;
-        }
-        /* OnClick + Active */
-        .uk-button-danger:active,
-        .uk-button-danger.uk-active {
-            background-color: #f0506e;
-            color: #ffffff;
-            border-color: #f0506e;
-        }
-        /*
-   * Disabled
-   * The same for all style modifiers
-   */
-        .uk-button-default:disabled,
-        .uk-button-primary:disabled,
-        .uk-button-secondary:disabled,
-        .uk-button-danger:disabled {
-            background-color: #f8f8f8;
-            color: #999999;
-        }
-        /* Text modifiers
-   ========================================================================== */
-        /*
-   * Text
-   * 1. Reset
-   * 2. Style
-   */
-        .uk-button-text {
-            /* 1 */
-            padding: 0;
-            line-height: 1.5;
-            background: none;
-            /* 2 */
-            color: #333333;
-            position: relative;
-        }
-        /* Hover + Focus */
-        .uk-button-text:hover,
-        .uk-button-text:focus {
-            color: #1e87f0;
-        }
-        /* Disabled */
-        .uk-button-text:disabled {
-            color: #999999;
-        }
-        /*
-   * Link
-   * 1. Reset
-   * 2. Style
-   */
-        .uk-button-link {
-            /* 1 */
-            padding: 0;
-            line-height: 1.5;
-            background: none;
-            /* 2 */
-            color: #1e87f0;
-        }
-        /* Hover + Focus */
-        .uk-button-link:hover,
-        .uk-button-link:focus {
-            color: #0f6ecd;
-        }
-        /* Disabled */
-        .uk-button-link:disabled {
-            color: #999999;
-            text-decoration: none;
-        }
-        /* Style modifiers
-   ========================================================================== */
-        /*
-   * Default
-   */
-        .uk-section-default,
-        .ap-container-default .uk-container {
-            background: #ffffff;
-        }
-        /*
-   * Primary
-   */
-        .uk-section-primary,
-        .ap-container-primary .uk-container {
-            background: #1e87f0;
-        }
-        /*
-   * Secondary
-   */
-        .uk-section-secondary,
-        .ap-container-secondary .uk-container {
-            background: #222222;
-        }
-        .uk-section-muted,
-        .ap-container-muted .uk-container {
-            background: #f8f8f8;
-        }
-        /* Style modifiers
-   ========================================================================== */
-        /*
-   * Default
-   */
-        .uk-tile-default {
-            background: #ffffff;
-        }
-        /*
-   * Muted
-   */
-        .uk-tile-muted {
-            background: #f8f8f8;
-        }
-        /*
-   * Primary
-   */
-        .uk-tile-primary {
-            background: #1e87f0;
-        }
-        /*
-   * Secondary
-   */
-        .uk-tile-secondary {
-            background: #222222;
-        }
-        /* ========================================================================
-     Component: Card
-   ========================================================================== */
-        /* Badge
-   ========================================================================== */
-        .uk-card-badge {
-            color: #666666;
-        }
-        /*
-   * Remove margin from adjacent element
-   */
-        .uk-card-badge:first-child + * {
-            margin-top: 0;
-        }
-        /* Style modifiers
-   ========================================================================== */
-        /*
-   * Default
-   * Note: Header and Footer are only implemented for the default style
-   */
-        .uk-card-default {
-            background: #ffffff;
-            color: #666666;
-        }
-        .uk-card-default .uk-card-title {
-            color: #333333;
-        }
-        .uk-card-default.uk-card-hover:hover {
-            background-color: #ffffff;
-        }
-        /*
-   * Primary
-   */
-        .uk-card-primary {
-            background: #1e87f0;
-            color: #ffffff;
-        }
-        .uk-card-primary .uk-card-title {
-            color: #ffffff;
-        }
-        /*
-   * Secondary
-   */
-        .uk-card-secondary {
-            background: #222222;
-            color: #ffffff;
-        }
-        .uk-card-secondary .uk-card-title {
-            color: #ffffff;
-        }
-        /* ========================================================================
-     Component: Close
-   ========================================================================== */
-        /* Hover + Focus */
-        .uk-close:hover,
-        .uk-close:focus {
-            color: #333333;
-            outline: none;
-        }
-        /* Hover + Focus */
-        .uk-totop:hover,
-        .uk-totop:focus {
-            color: #333333;
-            outline: none;
-            background-color: transparent;
-        }
-        /* OnClick */
-        .uk-totop:active {
-            color: #1e87f0;
-            background-color: transparent;
-        }
-        /* ========================================================================
-     Component: Marker
-   ========================================================================== */
-        /*
-   * Addopts `uk-icon`
-   */
-        .uk-marker {
-            padding: 5px;
-            background: #222222;
-            color: #ffffff;
-        }
-        /* Hover + Focus */
-        .uk-marker:hover,
-        .uk-marker:focus {
-            color: #ffffff;
-            outline: none;
-        }
-        /* ========================================================================
-     Component: Alert
-   ========================================================================== */
-        .uk-alert {
-            position: relative;
-            background: #ffffff;
-            color: #333333;
-        }
-        /* Style modifiers
-   ========================================================================== */
-        /*
-   * Primary
-   */
-        .uk-alert-primary {
-            background: #ffffff;
-            color: #1e87f0;
-        }
-        /*
-   * Success
-   */
-        .uk-alert-success {
-            background: #ffffff;
-            color: #32d296;
-        }
-        /*
-   * Warning
-   */
-        .uk-alert-warning {
-            background: #ffffff;
-            color: #faa05a;
-        }
-        /*
-   * Danger
-   */
-        .uk-alert-danger {
-            background: #ffffff;
-            color: #f0506e;
-        }
-        /* ========================================================================
-     Component: Badge
-   ========================================================================== */
-        /*
-   * 1. Style
-   * 2. Center child vertically and horizontally
-   */
-        .uk-badge {
-            /* 1 */
-            background: #1e87f0;
-            color: #ffffff;
-        }
-        /*
-   * Required for `a`
-   */
-        .uk-badge:hover,
-        .uk-badge:focus {
-            color: #ffffff;
-            text-decoration: none;
-            outline: none;
-        }
-        /* ========================================================================
-     Component: Label
-   ========================================================================== */
-        .uk-label {
-            background: #1e87f0;
-            color: #ffffff;
-        }
-        /* Color modifiers
-   ========================================================================== */
-        /*
-   * Success
-   */
-        .uk-label-success {
-            background-color: #32d296;
-            color: #ffffff;
-        }
-        /*
-   * Warning
-   */
-        .uk-label-warning {
-            background-color: #faa05a;
-            color: #ffffff;
-        }
-        /*
-   * Danger
-   */
-        .uk-label-danger {
-            background-color: #f0506e;
-            color: #ffffff;
-        }
-        /* ========================================================================
-     Component: Overlay
-   ========================================================================== */
-        .uk-overlay {
-            padding: 20px 20px;
-        }
-        /*
-   * Remove margin from the last-child
-   */
-        .uk-overlay > :last-child {
-            margin-bottom: 0;
-        }
-        /* Title
-   ========================================================================== */
-        .uk-article-title {
-            color: #333333;
-        }
-        /* Meta
-   ========================================================================== */
-        .uk-article-meta {
-            color: #999999;
-        }
-        .uk-article-meta a {
-            color: #999999;
-        }
-        .uk-article-meta a:hover {
-            color: #666666;
-            text-decoration: none;
-        }
-        /* Meta
-   ========================================================================== */
-        .uk-comment-meta {
-            color: #999999;
-        }
-        /* Style modifier
-   ========================================================================== */
-        .uk-comment-primary {
-            background-color: #f8f8f8;
-        }
-        .uk-search-input {
-            color: #333333;
-        }
-        .uk-search-input:focus {
-            outline: none;
-        }
-        /* Placeholder */
-        .uk-search-input:-ms-input-placeholder {
-            color: #999999 !important;
-        }
-        .uk-search-input::-moz-placeholder {
-            color: #999999;
-        }
-        .uk-search-input::-webkit-input-placeholder {
-            color: #999999;
-        }
-        /* Icon (Adopts `uk-icon`)
-   ========================================================================== */
-        /*
-   * Remove default focus style
-   */
-        .uk-search-icon:focus {
-            outline: none;
-        }
-        .uk-search .uk-search-icon {
-            color: #999999;
-        }
-        /*
-   * Required for `a`.
-   */
-        .uk-search .uk-search-icon:hover {
-            color: #999999;
-        }
-        /* Focus */
-        .uk-search-default .uk-search-input:focus {
-            background-color: #ffffff;
-        }
-        /* Toggle
-   ========================================================================== */
-        .uk-search-toggle {
-            color: #999999;
-        }
-        /* Hover + Focus */
-        .uk-search-toggle:hover,
-        .uk-search-toggle:focus {
-            color: #666666;
-        }
-        /* Parent icon modifier
-   ========================================================================== */
-        .uk-nav-parent-icon > .uk-parent > a::after {
-            content: "";
-            width: 1.5 em;
-            height: 1.5 em;
-        }
-        /*
-   * Items
-   */
-        .uk-nav-default > li > a {
-            color: #999999;
-        }
-        /* Hover + Focus */
-        .uk-nav-default > li > a:hover,
-        .uk-nav-default > li > a:focus {
-            color: #1e87f0;
-            background-color: transparent;
-        }
-        /* Active */
-        .uk-nav-default > li.uk-active > a {
-            color: #333333;
-            background-color: transparent;
-        }
-        /*
-   * Header
-   */
-        .uk-nav-default .uk-nav-header {
-            color: #333333;
-        }
-        /*
-   * Sublists
-   */
-        .uk-nav-default .uk-nav-sub a {
-            color: #999999;
-        }
-        .uk-nav-default .uk-nav-sub a:hover,
-        .uk-nav-default .uk-nav-sub a:focus {
-            color: #666666;
-        }
-        /*
-   * Items
-   */
-        .uk-nav-primary > li > a {
-            line-height: 1.5;
-            color: #999999;
-        }
-        /* Hover + Focus */
-        .uk-nav-primary > li > a:hover,
-        .uk-nav-primary > li > a:focus {
-            color: #1e87f0;
-        }
-        /* Active */
-        .uk-nav-primary > li.uk-active > a {
-            color: #333333;
-        }
-        /*
-   * Header
-   */
-        .uk-nav-primary .uk-nav-header {
-            color: #333333;
-        }
-        /*
-   * Sublists
-   */
-        .uk-nav-primary .uk-nav-sub a {
-            color: #999999;
-        }
-        .uk-nav-primary .uk-nav-sub a:hover,
-        .uk-nav-primary .uk-nav-sub a:focus {
-            color: #666666;
-        }
-        /*
-   * Nav items
-   */
-        .uk-navbar-nav > li > a {
-            color: #666666;
-        }
-        /*
-   * Hover
-   * Apply hover style also to focus state and if dropdown is opened
-   */
-        .uk-navbar-nav > li:hover > a,
-        .uk-navbar-nav > li > a:focus,
-        .uk-navbar-nav > li > a.uk-open {
-            color: #1e87f0;
-            outline: none;
-        }
-        .uk-navbar-nav > li > a:hover::before {
-            background-color: #1e87f0;
-        }
-        /* OnClick */
-        .uk-navbar-nav > li > a:active {
-            color: #333333;
-        }
-        /* Active */
-        .uk-navbar-nav > li.uk-active > a {
-            color: #333333;
-        }
-        .uk-navbar-nav > li.uk-active > a::before {
-            background-color: #1e87f0;
-        }
-        /* Item
-   ========================================================================== */
-        .uk-navbar-item {
-            color: #666666;
-        }
-        /* Toggle
-   ========================================================================== */
-        .uk-navbar-toggle {
-            color: #333333;
-        }
-        .uk-navbar-toggle:hover,
-        .uk-navbar-toggle:focus,
-        .uk-navbar-toggle.uk-open {
-            color: #1e87f0;
-        }
-        /* Dropdown
-   ========================================================================== */
-        /*
-   * Adopts `uk-dropdown`
-   * 1. Hide by default
-   * 2. Set position
-   * 3. Set a default width
-   * 4. Style
-   */
-        .uk-navbar-dropdown {
-            background: #ffffff;
-            color: #666666;
-        }
-        /*
-   * Items
-   */
-        .uk-navbar-dropdown-nav > li > a {
-            color: #999999;
-            padding: 5px 0;
-        }
-        /* Hover + Focus */
-        .uk-navbar-dropdown-nav > li > a:hover,
-        .uk-navbar-dropdown-nav > li > a:focus {
-            color: #1e87f0;
-            background-color: transparent;
-        }
-        /* Active */
-        .uk-navbar-dropdown-nav > li.uk-active > a {
-            color: #333333;
-        }
-        /*
-   * Header
-   */
-        .uk-navbar-dropdown-nav .uk-nav-header {
-            color: #333333;
-        }
-        /*
-   * Sublists
-   */
-        .uk-navbar-dropdown-nav .uk-nav-sub a {
-            color: #999999;
-        }
-        .uk-navbar-dropdown-nav .uk-nav-sub a:hover,
-        .uk-navbar-dropdown-nav .uk-nav-sub a:focus {
-            color: #666666;
-        }
-        /* Dropbar
-   ========================================================================== */
-        .uk-navbar-dropbar {
-            position: relative;
-            background: #ffffff;
-            overflow: hidden;
-        }
-        /* Items
-   ========================================================================== */
-        /*
-   * Items must target `a` elements to exclude other elements (e.g. dropdowns)
-   * Using `:first-child` instead of `a` to support `span` elements for text
-   * 1. Prevent gap if child element is `inline-block`, e.g. an icon
-   * 2. Style
-   */
-        .uk-subnav > * > :first-child {
-            color: #999999;
-        }
-        /* Hover + Focus */
-        .uk-subnav > * > a:hover,
-        .uk-subnav > * > a:focus {
-            color: #666666;
-            text-decoration: none;
-            outline: none;
-        }
-        /* Active */
-        .uk-subnav > .uk-active > a {
-            color: #333333;
-        }
-        /* Pill modifier
-   ========================================================================== */
-        .uk-subnav-pill > * > :first-child {
-            color: #999999;
-        }
-        /* Hover + Focus */
-        .uk-subnav-pill > * > a:hover,
-        .uk-subnav-pill > * > a:focus {
-            background-color: #ffffff;
-            color: #666666;
-        }
-        /* OnClick */
-        .uk-subnav-pill > * > a:active {
-            background-color: #ffffff;
-            color: #333333;
-        }
-        /* Active */
-        .uk-subnav-pill > .uk-active > a {
-            background-color: #1e87f0;
-            color: #ffffff;
-        }
-        /* Disabled
-   * The same for all style modifiers
-   ========================================================================== */
-        .uk-subnav > .uk-disabled > a {
-            color: #999999;
-        }
-        /* Items
-   ========================================================================== */
-        .uk-breadcrumb > * > * {
-            color: #999999;
-        }
-        /* Hover + Focus */
-        .uk-breadcrumb > * > :hover,
-        .uk-breadcrumb > * > :focus {
-            color: #666666;
-            text-decoration: none;
-        }
-        /* Disabled */
-        .uk-breadcrumb > .uk-disabled > * {
-            color: #999999;
-        }
-        /* Active */
-        .uk-breadcrumb > :last-child > * {
-            color: #333333;
-        }
-        /* Items
-   ========================================================================== */
-        /*
-   * 1. Prevent gap if child element is `inline-block`, e.g. an icon
-   * 2. Style
-   */
-        .uk-pagination > * > * {
-            color: #999999;
-        }
-        /* Hover + Focus */
-        .uk-pagination > * > :hover,
-        .uk-pagination > * > :focus {
-            color: #333333;
-            background-color: #ffffff;
-        }
-        /* Active */
-        .uk-pagination > .uk-active > * {
-            color: #1e87f0;
-            background-color: transparent;
-        }
-        /* Disabled */
-        .uk-pagination > .uk-disabled > * {
-            color: #999999;
-            background-color: transparent;
-        }
-        /* Items
-   ========================================================================== */
-        /*
-   * Items must target `a` elements to exclude other elements (e.g. dropdowns)
-   * 1. Center text if a width is set
-   * 2. Style
-   */
-        .uk-tab > * > a {
-            color: #999999;
-        }
-        /* Hover + Focus */
-        .uk-tab > * > a:hover,
-        .uk-tab > * > a:focus {
-            color: #666666;
-            text-decoration: none;
-            border-color: transparent;
-        }
-        /* Active */
-        .uk-tab > .uk-active > a {
-            color: #333333;
-            border-color: #1e87f0;
-        }
-        /* Disabled */
-        .uk-tab > .uk-disabled > a {
-            color: #999999;
-        }
-        /* Items
-   ========================================================================== */
-        /* Hover + Focus */
-        .uk-dotnav > * > :hover,
-        .uk-dotnav > * > :focus {
-            background-color: rgba(248, 108, 74, 0.4);
-            outline: none;
-            border-color: transparent;
-        }
-        /* OnClick */
-        .uk-dotnav > * > :active {
-            background-color: #1e87f0;
-            border-color: transparent;
-        }
-        /* Active */
-        .uk-dotnav > .uk-active > * {
-            background-color: #1e87f0;
-            border-color: transparent;
-        }
-        /* ========================================================================
-     Component: Dropdown
-   ========================================================================== */
-        .uk-dropdown {
-            background: #ffffff;
-            color: #666666;
-        }
-        /*
-   * Items
-   */
-        .uk-dropdown-nav > li > a {
-            color: #999999;
-        }
-        /* Hover + Focus + Active */
-        .uk-dropdown-nav > li > a:hover,
-        .uk-dropdown-nav > li > a:focus,
-        .uk-dropdown-nav > li.uk-active > a {
-            color: #333333;
-            background-color: transparent;
-        }
-        /*
-   * Header
-   */
-        .uk-dropdown-nav .uk-nav-header {
-            color: #1e87f0;
-        }
-        /*
-   * Sublists
-   */
-        .uk-dropdown-nav .uk-nav-sub a {
-            color: #999999;
-        }
-        .uk-dropdown-nav .uk-nav-sub a:hover,
-        .uk-dropdown-nav .uk-nav-sub a:focus {
-            color: #1e87f0;
-        }
-        /* Dialog
-   ========================================================================== */
-        /*
-   * 1. Create position context for spinner and close button
-   * 2. Dimensions
-   * 3. Fix `max-width: 100%` not working in combination with flex and responsive images in IE11
-   *    `!important` needed to overwrite `uk-width-auto`. See `#modal-media-image` in tests
-   * 4. Style
-   * 5. Slide-in transition
-   */
-        .uk-modal-dialog {
-            background: #ffffff;
-        }
-        /*
-   * Open
-   */
-        .uk-open > .uk-modal-dialog {
-            opacity: 1;
-            -webkit-transform: translateY(0);
-            transform: translateY(0);
-        }
-        /* Message
-  ========================================================================== */
-        .uk-notification-message {
-            background: #f8f8f8;
-            color: #666666;
-        }
-        /* Style modifiers
-   ========================================================================== */
-        /*
-   * Primary
-   */
-        .uk-notification-message-primary {
-            color: #1e87f0;
-        }
-        /*
-   * Success
-   */
-        .uk-notification-message-success {
-            color: #32d296;
-        }
-        /*
-   * Warning
-   */
-        .uk-notification-message-warning {
-            color: #faa05a;
-        }
-        /*
-   * Danger
-   */
-        .uk-notification-message-danger {
-            color: #f0506e;
-        }
-        /* ========================================================================
-     Component: Tooltip
-   ========================================================================== */
-        .uk-tooltip {
-            /* 4 */
-            background: #1e87f0;
-            color: #ffffff;
-        }
-        /*
-   * Remove animated circles for indeterminate state in IE11 and Edge
-   */
-        .uk-progress:indeterminate {
-            color: transparent;
-        }
-        /*
-   * Progress container
-   * 2. Remove progress bar for indeterminate state in Firefox
-   */
-        .uk-progress::-webkit-progress-bar {
-            background-color: #f8f8f8;
-            border-radius: 500px;
-            overflow: hidden;
-        }
-        /*
-   * Progress bar
-   * 1. Remove right border in IE11 and Edge
-   */
-        .uk-progress::-webkit-progress-value {
-            background-color: #1e87f0;
-        }
-        .uk-progress::-moz-progress-bar {
-            background-color: #1e87f0;
-        }
-        .uk-progress::-ms-fill {
-            background-color: #1e87f0;
-        }
-        /* ========================================================================
-     Component: Text
-   ========================================================================== */
-        /* Style modifiers
-   ========================================================================== */
-        .uk-text-lead {
-            color: #333333;
-        }
-        .uk-text-meta {
-            color: #999999;
-        }
-        .uk-text-meta a {
-            color: #999999;
-        }
-        .uk-text-meta a:hover {
-            color: #666666;
-            text-decoration: none;
-        }
-        /* Size modifiers
-   ========================================================================== */
-        .uk-text-small {
-            font-size: 12px;
-            line-height: 1.5;
-        }
-        .uk-text-large {
-            font-size: 20px;
-            line-height: 1.5;
-        }
-        /* Weight modifier
-   ========================================================================== */
-        .uk-text-bold {
-            font-weight: bolder;
-        }
-        /* Transform modifier
-   ========================================================================== */
-        .uk-text-uppercase {
-            text-transform: uppercase !important;
-        }
-        .uk-text-capitalize {
-            text-transform: capitalize !important;
-        }
-        .uk-text-lowercase {
-            text-transform: lowercase !important;
-        }
-        /* Color modifiers
-   ========================================================================== */
-        .uk-text-muted {
-            color: #999999 !important;
-        }
-        .uk-text-primary {
-            color: #1e87f0 !important;
-        }
-        .uk-text-success {
-            color: #32d296 !important;
-        }
-        .uk-text-warning {
-            color: #faa05a !important;
-        }
-        .uk-text-danger {
-            color: #f0506e !important;
-        }
-        /* Background modifier */
-        .uk-text-background {
-            color: #1e87f0 !important;
-        }
-        @supports (-webkit-background-clip: text) {
-            .uk-text-background {
-                background-color: #1e87f0;
-            }
-        }
-        /* ========================================================================
-     Component: Background
-   ========================================================================== */
-        /* Color
-   ========================================================================== */
-        .uk-background-default {
-            background-color: #ffffff;
-        }
-        .uk-background-muted {
-            background-color: #f8f8f8;
-        }
-        .uk-background-primary {
-            background-color: #1e87f0;
-        }
-        .uk-background-secondary {
-            background-color: #222222;
-        }
-        /* ========================================================================
-     Component: Inverse
-   ========================================================================== */
+        .uk-button-primary { background-color: #1e87f0;color: #ffffff;}
+        .uk-button-primary:hover, .uk-button-primary:focus {background-color: #222222;color: #ffffff;}
+        .uk-button-primary:active {color: #ffffff;}
+        .uk-button-default:disabled,.uk-button-primary:disabled{background-color: #f8f8f8;color: #999999; }
+        .uk-section-default {background: #ffffff;}
+        .uk-section-primary{background: #1e87f0;}
+        .uk-section-secondary{background: #222222;}
+        .uk-section-muted{background: #f8f8f8;}
+        .uk-card-badge:first-child + * {margin-top: 0;}
+        .uk-card-default {background: #ffffff;color: #666666;}
+        .uk-card-default .uk-card-title { color: #333333;}
+        .uk-card-default.uk-card-hover:hover {background-color: #ffffff;}
+        .uk-card-primary .uk-card-title {color: #ffffff;}
+        .uk-card-secondary .uk-card-title {color: #ffffff;}
+        .uk-overlay > :last-child {margin-bottom: 0;}
+        .uk-article-meta a { color: #999999; }
+        .uk-article-meta a:hover { color: #666666;text-decoration: none;}
+        .uk-nav-parent-icon > .uk-parent > a::after {content: "";width: 1.5 em;height: 1.5 em;}
+        .uk-nav-default > li > a {color: #999999;}
+        .uk-nav-default > li > a:hover,.uk-nav-default > li > a:focus {color: #1e87f0;background-color: transparent;}
+        .uk-nav-default > li.uk-active > a {color: #333333;background-color: transparent;}
+        .uk-nav-default .uk-nav-sub a {color: #999999;}
+        .uk-nav-default .uk-nav-sub a:hover,.uk-nav-default .uk-nav-sub a:focus {color: #666666;}
+        .uk-nav-primary > li > a {line-height: 1.5;color: #999999;}
+        .uk-nav-primary > li > a:hover, .uk-nav-primary > li > a:focus {color: #1e87f0; }
+        .uk-nav-primary > li.uk-active > a {color: #333333;}
+        .uk-nav-primary .uk-nav-sub a {color: #999999;}
+        .uk-nav-primary .uk-nav-sub a:hover,.uk-nav-primary .uk-nav-sub a:focus {color: #666666;}
+        .uk-navbar-nav > li > a {color: #666666;}
+        .uk-navbar-nav > li:hover > a,.uk-navbar-nav > li > a:focus{color: #1e87f0;outline: none;}
+        .uk-navbar-nav > li > a:hover::before {background-color: #1e87f0;}
+        .uk-navbar-nav > li > a:active { color: #333333;}
+        .uk-navbar-nav > li.uk-active > a {color: #333333;}
+        .uk-navbar-nav > li.uk-active > a::before {background-color: #1e87f0;}
+        .uk-navbar-item {color: #666666;}
+        .uk-navbar-dropdown-nav > li > a {color: #999999; padding: 5px 0;}
+        .uk-navbar-dropdown-nav > li > a:hover,.uk-navbar-dropdown-nav > li > a:focus {color: #1e87f0;background-color: transparent;}
+        .uk-navbar-dropdown-nav > li.uk-active > a { color: #333333;}
+        .uk-navbar-dropdown-nav .uk-nav-sub a {color: #999999;}
+        .uk-navbar-dropdown-nav .uk-nav-sub a:hover, .uk-navbar-dropdown-nav .uk-nav-sub a:focus { color: #666666;}
+        .uk-navbar-dropbar {  position: relative; background: #ffffff; overflow: hidden; }
+        .uk-subnav > * > :first-child {  color: #999999;}
+        .uk-subnav > * > a:hover,.uk-subnav > * > a:focus {color: #666666; text-decoration: none; outline: none; }
+        .uk-subnav > .uk-active > a { color: #333333;}
+        .uk-subnav-pill > * > :first-child { color: #999999;}
+        .uk-subnav-pill > * > a:hover,.uk-subnav-pill > * > a:focus { background-color: #ffffff; color: #666666;}
+        .uk-subnav-pill > * > a:active { background-color: #ffffff; color: #333333;}
+        .uk-subnav-pill > .uk-active > a { background-color: #1e87f0; color: #ffffff;}
+        .uk-subnav > .uk-disabled > a { color: #999999;}
+        .uk-breadcrumb > * > * { color: #999999;}
+        .uk-breadcrumb > * > :hover,.uk-breadcrumb > * > :focus { color: #666666; text-decoration: none; }
+        .uk-breadcrumb > .uk-disabled > * { color: #999999; }
+        .uk-breadcrumb > :last-child > * { color: #333333; }
+        .uk-pagination > * > * { color: #999999; }
+        .uk-pagination > * > :hover, .uk-pagination > * > :focus {color: #333333; background-color: #ffffff;}
+        .uk-pagination > .uk-active > * {color: #1e87f0; background-color: transparent;}
+        .uk-pagination > .uk-disabled > * { color: #999999;  background-color: transparent; }
+        .uk-tab > * > a {  color: #999999;}
+        .uk-tab > * > a:hover, .uk-tab > * > a:focus {color: #666666; text-decoration: none; border-color: transparent; }
+        .uk-tab > .uk-active > a { color: #333333;  border-color: #1e87f0; }
+        .uk-tab > .uk-disabled > a { color: #999999; }
+        .uk-dotnav > * > :hover, .uk-dotnav > * > :focus {background-color: rgba(248, 108, 74, 0.4); outline: none; border-color: transparent;}
+        .uk-dotnav > * > :active { background-color: #1e87f0; border-color: transparent;}
+        .uk-dotnav > .uk-active > * { background-color: #1e87f0;  border-color: transparent;}
+        .uk-dropdown-nav > li > a { color: #999999;}
+        .uk-dropdown-nav > li > a:hover,.uk-dropdown-nav > li > a:focus,.uk-dropdown-nav > li.uk-active > a { color: #333333;  background-color: transparent;}
+        .uk-dropdown-nav .uk-nav-sub a { color: #999999;}
+        .uk-dropdown-nav .uk-nav-sub a:hover,.uk-dropdown-nav .uk-nav-sub a:focus { color: #1e87f0;}
+        .uk-text-meta a { color: #999999;}
+        .uk-text-meta a:hover { color: #666666;  text-decoration: none; }
+        .uk-text-small { font-size: 12px; line-height: 1.5; }
+        .uk-text-bold { font-weight: bolder; }
+        .uk-background-default { background-color: #ffffff;}
+        .uk-background-muted { background-color: #f8f8f8; }
+        .uk-background-primary {  background-color: #1e87f0; }
+        .uk-background-secondary { background-color: #222222;}
         .uk-light a,
         .uk-light .uk-link,
         .uk-section-primary:not(.uk-preserve-color) a,
@@ -2316,24 +1037,6 @@
         .ap-toolbar .uk-text-lead {
             color: #ffffff;
         }
-        /* Header
-   ========================================================================== */
-        /*
-   * Header
-   */
-        /*
-   * Headerbars
-   */
-        .ap-headerbar-top {
-            padding-top: 40px;
-            padding-bottom: 40px;
-            background: #ffffff;
-        }
-        .ap-headerbar-bottom {
-            padding-top: 40px;
-            padding-bottom: 40px;
-            background: #ffffff;
-        }
         .ap-header .uk-navbar-nav .menu-item a {
             position: relative;
         }
@@ -2345,12 +1048,6 @@
         .ap-header .uk-navbar-nav .uk-active a::before {
             right: 15px;
             display: block;
-        }
-        .ap-header-transparent {
-            position: absolute;
-            z-index: 980;
-            left: 0;
-            right: 0;
         }
         .ap-header-transparent .uk-navbar-nav .menu-item a {
             position: relative;
@@ -2368,9 +1065,6 @@
             height: 80px;
             z-index: 100;
             transition: background-color 0.3s ease-in;
-        }
-        .uk-navbar-transparent.uk-sticky-below {
-            z-index: 1000;
         }
         .uk-navbar-transparent.uk-sticky-below .uk-navbar-nav > li.uk-active > a,
         .uk-navbar-transparent.uk-sticky-below .uk-navbar-nav > li > a:hover {
@@ -2416,118 +1110,13 @@
             left: 15px;
             right: calc(77%);
         }
-        /* ========================================================================
-   Component: Padding
- ========================================================================== */
-        /* mobile */
-        @media (max-width: 640px) {
-            .uk-padding {
-                padding: 14px;
-            }
-            .uk-padding-small {
-                padding: 8px 15px;
-            }
-            .uk-margin-medium {
-                margin-bottom: 16px;
-            }
-            .uk-button {
-                padding: 0 12px;
-                line-height: 30px;
-            }
-            .uk-card-default .uk-card-title,
-            .uk-card-title {
-                font-size: 1rem;
-            }
-            .uk-card-body {
-                padding: 10px;
-            }
-            p {
-                font-size: .875rem;
-            }
-            .uk-heading-primary,
-            .uk-heading-hero,
-            .uk-h1,
-            h1 {
-                font-size: 1.75rem;
-            }
-            .uk-h2,
-            h2 {
-                font-size: 1.25rem;
-            }
-            .uk-h3,
-            h3 {
-                font-size: 1.125rem;
-            }
-            .uk-h4,
-            h4 {
-                font-size: .875rem;
-            }
-            .uk-h5,
-            h5,
-            .uk-h6,
-            h6 {
-                font-size: .75rem;
-            }
-            .uk-margin {
-                margin-bottom: 14px;
-            }
-            * + .uk-margin {
-                margin-top: 14px!important;
-            }
-            .uk-grid {
-                margin-left: -14px;
-            }
-            .uk-grid > * {
-                padding-left: 14px;
-            }
-            * + .uk-grid-margin,
-            .uk-grid + .uk-grid,
-            .uk-grid > .uk-grid-margin {
-                margin-top: 16px;
-            }
-            .uk-card-small .uk-card-body,
-            .uk-card-small.uk-card-body {
-                padding: 6px;
-            }
-            .uk-section {
-                padding-top: 16px;
-                padding-bottom: 16px;
-            }
-            .uk-margin-large-top {
-                margin-top: 26px !important;
-            }
-            .uk-margin-large {
-                margin-bottom: 26px;
-            }
-            .dynamic-pagination li {
-                height: 24px;
-            }
-            .dynamic-pagination li a {
-                padding: 0 8px;
-                line-height: 24px;
-                font-size: 12px;
-            }
-        }
         .preview .uk-section-secondary .uk-button-primary:hover {
             background-color: #0e6dcd;
         }
-
     </style>
 
     <!-- 组件样式 -->
     <style id="page-style">
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
-        #a1b0ea9ce3a02c0 [class*=uk-navbar-dropdown-bottom] {
-            margin-top: 0;
-        }
-        #a1b0ea9ce3a02c0 .uk-navbar-dropdown {
-            box-shadow: none;
-            background-color: #ffffff;
-            color: #666;
-        }
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
         #a0c36a8f19abb33 .uk-button {
             border-radius: 100px;
             font-weight: bold;
@@ -2564,8 +1153,6 @@
             animation: AnimationName 3s ease infinite;
             border: medium none;
         }
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
         #a347aa2c5fae967 .uk-h4 {
             color: #888;
             font-weight: 300;
@@ -2574,16 +1161,10 @@
             color: #333;
             font-weight: bold;
         }
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
         #aa882a0587ae15b .slider-picture {
             min-height: 200px;
         }
-        @media (min-width: 640px) {
-            #aa882a0587ae15b .slider-picture {
-                height: 400px;
-            }
-        }
+
         #aa882a0587ae15b .slider-item {
             transition: transform 0.2s ease-in-out;
         }
@@ -2591,8 +1172,6 @@
             transform: scale(1.1);
             -webkit-transform: scale(1.1);
         }
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
         #a2165adcb7a493e .price-detail {
             list-style: none;
             margin-bottom: 20px;
@@ -2615,8 +1194,6 @@
             background: #1e87f0;
             line-height: 50px;
         }
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
-        @global-background-image :/frontend/images/f754177b66df7d86b869fff3d7d023afea9a6c60a1d742cd4bbdb3f1473ccc2e.jpeg;
         #a5c60af020a37e1 input,
         #a5c60af020a37e1 button {
             border-radius: 20px;
@@ -2636,61 +1213,10 @@
 <div class="preview" id="preview">
     <div id="a1b0ea9ce3a02c0" section-id="a1b0ea9ce3a02c0" data-id="a1b0ea9ce3a02c0" class="section uk-section uk-padding-remove-vertical uk-dark navigator" style=""><div class="ap-content-container">
 
-
-
-
-
-
-
-
-
-
             <style>
-
-
-
-
-
-
-                #a1b0ea9ce3a02c0 .uk-navbar-container {
-                    background-color: ;
-                }
-
-                #a1b0ea9ce3a02c0 .uk-navbar-container .uk-navbar-nav > li > a {
-                    color: #ffffff;
-                }
-
-                #a1b0ea9ce3a02c0 .uk-navbar-container.uk-navbar-sticky {
-                    background-color: ;
-                }
-
-                #a1b0ea9ce3a02c0 .uk-navbar-container.uk-navbar-sticky .uk-navbar-nav > li > a {
-                    color: ;
-                }
-
-                #a1b0ea9ce3a02c0 .uk-navbar-nav > li.uk-active > a,
-                #a1b0ea9ce3a02c0 .uk-navbar-nav > li.uk-active > a::before {
-                    color: #ffffff;
-                }
-                #a1b0ea9ce3a02c0 .ap-header-mobile #ap-header-mobile-container { background-color: #fff; }
-                #a1b0ea9ce3a02c0 #ap-header-mobile-container .ap-nav-mobile-wrapper .ap-nav-mobile-container { background: #191919 }
-                #a1b0ea9ce3a02c0 .ap-header-mobile #ap-nav-mobile-container-item-wrapper>li>a,
-                #a1b0ea9ce3a02c0 .ap-header-mobile #ap-header-common-ope-wrapper>li>a{ color: #A6A6A6; }
-                .preview {
-
-                    left: 0;
-                    -webkit-transition: .4s left ease-in-out;
-                    -moz-transition: .4s left ease-in-out;
-                    -o-transition: .4s left ease-in-out;
-                    transition: .4s left ease-in-out;
-
-
-                }
-                .previewMove {
-
-                    left: -20%; right: auto;
-
-                }
+                #a1b0ea9ce3a02c0 .uk-navbar-container .uk-navbar-nav > li > a {color: #ffffff;}
+                #a1b0ea9ce3a02c0 .uk-navbar-nav > li.uk-active > a, #a1b0ea9ce3a02c0 .uk-navbar-nav > li.uk-active > a::before {  color: #ffffff;}
+                #a1b0ea9ce3a02c0 .ap-header-mobile #ap-nav-mobile-container-item-wrapper>li>a,#a1b0ea9ce3a02c0 .ap-header-mobile #ap-header-common-ope-wrapper>li>a{ color: #A6A6A6; }
             </style>
 
             <div class="ap-header uk-visible@m  uk-navbar-transparent " uk-header="">

@@ -1,24 +1,9 @@
 @extends('admin.layouts.admin_app')
 @section('title')编辑普通文档@stop
 @section('head')
-    <link href="/adminlte/plugins/summernote/summernote.css" rel="stylesheet">
     <link href="/adminlte/plugins/iCheck/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="/adminlte//plugins/daterangepicker/daterangepicker.css">
     <link rel="stylesheet" href="/adminlte/plugins/datepicker/datepicker3.css">
     <link href="/adminlte/plugins/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
-    <link href="/adminlte/plugins/select2/select2.min.css" rel="stylesheet">
-    <style>
-        .select2-container--default .select2-selection--single {
-            border-radius: 0px;
-        }
-        .select2-container .select2-selection--single {
-            height: 34px;
-            border: 1px solid #d2d6de;
-        }
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            padding-left: 0px;
-        }
-    </style>
 @stop
 @section('content')
     <!-- row -->
@@ -101,35 +86,28 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
-                                {{Form::label('keywords', '文档关键字', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
+                                {{Form::label('shorttitle', '简略标题', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
+                                <div class="col-md-4 col-sm-9 col-xs-12">
+                                    {{Form::text('shorttitle',null, array('class' => 'form-control','id'=>'shorttitle','placeholder'=>'短标题'))}}
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                {{Form::label('tags', 'tag标签', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
+                                <div class="col-md-4 col-sm-9 col-xs-12">
+                                    {{Form::text('tags', null, array('class' => 'form-control','id'=>'tags','placeholder'=>'文档tag标签'))}}
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                {{Form::label('keywords', '关键字', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                     {{Form::text('keywords',null, array('class' => 'form-control','id'=>'keywords','placeholder'=>'文档关键词'))}}
                                 </div>
                             </div>
-                           @if($articleinfos->brandid && isset($articleinfos->brandarticle->id))
-                                <div class="form-group col-md-12">
-                                    {{Form::label('brandcid', '品牌所属大类', array('class' => 'col-sm-2 control-label'))}}
-                                    <div class="col-md-4">
-                                        {{Form::select('brandcid', $brandnavs, null,array('class'=>'form-control select2' ,'id'=>'brandcid'))}}
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-12 ">
-                                    {{Form::label('brandtypeid', '品牌所属子类', array('class' => 'col-sm-2 control-label'))}}
-                                    <div class="col-md-4">
-                                        {{Form::select('brandtypeid', [], null,array('class'=>'form-control select2','id'=>'brandtypeid'))}}
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-12">
-                                    {{Form::label('brandid', '文档所属品牌', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
-                                    <div class="col-md-4 col-sm-9 col-xs-12">
-                                        {{Form::select('brandid', [], null,array('class'=>'form-control select2','id'=>'brandid'))}}
-                                    </div>
-                                </div>
-                            @endif
-                            <div class="form-group col-md-12 ">
-                                {{Form::label('typeid', '文章所属栏目', array('class' => 'col-sm-2 control-label'))}}
-                                <div class="col-md-4">
-                                    {{Form::select('typeid', $allnavinfos, null,array('class'=>'form-control select2'))}}
+                            <div class="form-group col-md-12">
+                                {{Form::label('bdname', '所属品牌', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
+                                <div class="col-md-4 col-sm-9 col-xs-12">
+                                    {{Form::text('bdname',null, array('class' => 'form-control','id'=>'keywords','placeholder'=>'所属品牌'))}}
                                 </div>
                             </div>
                             <div class="form-group col-md-12 ">
@@ -139,34 +117,30 @@
                                     {{Form::radio('updatetime', 0, true,array('class'=>'flat-red'))}}不更新
                                 </div>
                             </div>
-                            @if(!$articleinfos->ismake)
-                                <div class="form-group col-md-12 ">
-                                    {{Form::label('xiongzhang', '熊掌号推送', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
-                                    <div class="radio col-md-4 col-sm-9 col-xs-12">
-                                        {{Form::radio('xiongzhang', '1', false,array('class'=>'flat-red'))}} 熊掌号天级推送
-                                        {{Form::radio('xiongzhang', '0', true,array('class'=>'flat-red'))}}熊掌号周级推送
-                                    </div>
+                            <div class="form-group col-md-12 ">
+                                {{Form::label('typeid', '文章所属栏目', array('class' => ' col-md-2 control-label'))}}
+                                <div class="col-md-4">
+                                    {{Form::select('typeid', $allnavinfos, null,array('class'=>'form-control select2'))}}
                                 </div>
-                            @endif
+                            </div>
                             <div class="form-group col-md-12">
                                 {{Form::label('description', '文档描述', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                     {{Form::textarea('description',null, array('class' => 'form-control col-md-10','id'=>'desrciption','rows'=>3,'placeholder'=>'不填写将自动提取首段'))}}
                                 </div>
                             </div>
+                            @if(!$articleinfos->ismake)
                             <div class="form-group col-md-12 ">
                                 {{Form::label('ismake', '文章状态', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
                                 <div class="radio col-md-4 col-sm-9 col-xs-12">
-                                    @if($articleinfos->ismake)
-                                        {{Form::radio('ismake', '1', true,array('class'=>'flat-red','checked'=>'checked'))}} 已审核
-                                        {{Form::radio('ismake', '0', false,array('class'=>'flat-red'))}}未审核
-                                    @else
-                                        {{Form::radio('ismake', '1', true,array('class'=>'flat-red','checked'=>'checked'))}} 已审核
+                                        {{Form::radio('ismake', '1', true,array('class'=>'flat-red'))}} 已审核
                                         {{Form::radio('ismake', '0', false,array('class'=>'flat-red','checked'=>'checked'))}}未审核
-                                    @endif
                                 </div>
                             </div>
-                            @if(!$articleinfos->ismake || $articleinfos->published_at > \Carbon\Carbon::now())
+                            @else
+                                {{Form::hidden('ismake', '1', array('class' => 'form-control col-md-10','id'=>'mid'))}}
+                            @endif
+                            @if(!$articleinfos->ismake)
                             <div class="form-group col-md-12 ">
                                 {{Form::label('published_at', '预选发布时间', array('class' => 'control-label col-md-2 col-sm-3 col-xs-12'))}}
                                 <div class="input-group date  col-md-4 " style="padding-right: 15px; padding-left: 15px;">
@@ -305,7 +279,7 @@
                             </div>
                         </div>
                         <div class="timeline-footer">
-                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                            <button class="btn btn-warning btn-flat btn-xs" disabled="disabled">View comment</button>
                         </div>
                     </div>
                 </li>
@@ -320,7 +294,6 @@
                 <!-- timeline item -->
                 <li>
                     <i class="fa fa-camera bg-purple"></i>
-
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i> {{date('j, n,y')}}</span>
                         <h3 class="timeline-header"><a href="#">图集处理</a> 批量上传图集</h3>
@@ -376,8 +349,8 @@
         </ul>
     @endif
     </section>
-
 @stop
+
 @section('libs')
     <!-- iCheck -->
     <script src="/adminlte/plugins/iCheck/icheck.min.js"></script>
@@ -385,20 +358,18 @@
     <script src="/adminlte/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
     <script src="/adminlte/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
     <script src="/adminlte/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
-    <script src="/adminlte/plugins/select2/select2.full.min.js"></script>
-    <script src="/adminlte/plugins/select2/i18n/zh-CN.js"></script>
-    <script src="/adminlte/validator.js"></script>
     <script>
         $(function () {
-            $('.select2').select2({language: "zh-CN"});
-            @if($articleinfos->brandid && isset($articleinfos->brandarticle->id))
-            $("#brandcid").select2().val({{$articleinfos->brandarticle->arctype->reid}}).trigger("change");
-            getThissonTypes("/admin/getsontypes",{"topid":$("#brandcid").select2("val")},"#brandtypeid");
-            $("#brandcid").on("change",function(){getsonTypes("/admin/getsontypes",{"topid":$("#brandcid").select2("val")},"#brandtypeid")});
-            $("#brandtypeid").on("change",function(){getBdname('/admin/getbdname',{"typeid":$("#brandtypeid").select2("val")},"#brandid")});
-            @endif
-            $('#datepicker').datepicker({autoclose: true,language: 'zh-CN',todayHighlight: true });
-            $('.basic_info input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({ checkboxClass: 'icheckbox_flat-green', radioClass: 'iradio_flat-green'});
+            $('#datepicker').datepicker({
+                autoclose: true,
+                language: 'zh-CN',
+                todayHighlight: true
+            });
+            //Flat red color scheme for iCheck
+            $('.basic_info input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            });
         });
     </script>
     <script>
@@ -428,7 +399,8 @@
             $('#kv-success-box').html('上传成功！');
             $('#kv-success-modal').modal('show');
             $('.kv-file-remove').hide();
-            $("#imagepics").val($("#imagepics").val()+params.response.src+',');
+            $("#imagepics").val($("#imagepics").val()+params.response.link+',');
+            $("#imagepics").val($("#imagepics").val().replace(',,',','));
         }).on("filepredelete", function() {
             var abort = true;
             if (confirm("确定要删除此图片吗 此删除操作为异步操作,删除后图片不可恢复,删除后请及时提交")) {
@@ -439,54 +411,6 @@
             $("#imagepics").val($("#imagepics").val().replace(key,''));
             $("#imagepics").val($("#imagepics").val().replace(',,',','));
         });
-        @if($articleinfos->brandid && isset($articleinfos->brandarticle->id))
-        function getThissonTypes(url,datas,element)
-        {
-            $.ajax(
-                {type:"POST",url:url,data:datas,
-                    datatype: "json",
-                    success:function (response) {
-                        var contents='';
-                        for (type in response) {
-                            contents += '<option value="' + type + '">' + response[type] + '</option>';
-                        }
-                        $(element).html(contents);
-                        $(element).select2().val({{$articleinfos->brandarticle->typeid}}).trigger("change");
-                    }
-                });
-        }
-        function getsonTypes(url,datas,element)
-        {
-            $.ajax(
-                {type:"POST",url:url,data:datas,
-                    datatype: "json",
-                    success:function (response) {
-                        var contents='';
-                        for (type in response) {
-                            contents += '<option value="' + type + '">' + response[type] + '</option>';
-                        }
-                        $(element).html(contents);
-                        getBdname('/admin/getbdname',{"typeid":$("#brandtypeid").select2("val")},"#brandid")
-                    }
-                });
-        }
-        function getBdname(url,datas,element)
-        {
-            $.ajax(
-                {type:"POST",url:url,data:datas,
-                    datatype: "json",
-                    success:function (response) {
-                        var contents='';
-                        for (type in response) {
-                            contents += '<option value="' + type + '">' + response[type] + '</option>';
-                        }
-                        $(element).html(contents);
-                        var val=$(element).select2("val")
-                        $(element).select2().val({{$articleinfos->brandid}}).trigger("change");
-                    }
-                });
-        }
-        @endif
     </script>
 @stop
 

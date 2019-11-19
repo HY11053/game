@@ -4,7 +4,7 @@
     @stop
     @section('content')
         <div class="right_col" role="main">
-            简介：LARSTYCMSV2.0 是基于laravel5.5框架开发的CMS系统
+            简介：LARSTYCMSV3.0 是基于laravel6.5框架开发的CMS系统
             <hr/>
             当前版本V2.0
             <hr/>

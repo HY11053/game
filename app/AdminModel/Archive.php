@@ -5,10 +5,11 @@ namespace App\AdminModel;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class Archive extends Model
 {
-    protected $guarded = ['xiongzhang','image','updatetime','input-image','topid'];
+    protected $guarded = ['xiongzhang','image','updatetime','input-image'];
     protected $dates = ['published_at'];
     /**
      * 全局scope定义
@@ -19,36 +20,35 @@ class Archive extends Model
         static::addGlobalScope(new PublishedScope);
     }
     /**
-     * 文档入库之前的预选发布时间格式转换
+     * 文档入库之前的时间格式转换
      * @param $date
      */
     public function setPublishedAtAttribute($date)
     {
         if(!empty($date) && strpos($date,':')==false)
         {
-            $this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d',$date);
+            $this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d',$date)->addHours(rand(1,24))->addMinutes(rand(1,60));
         }else{
             $this->attributes['published_at'] =$date?$date : Carbon::now();
         }
     }
-
-    /**自定义文档属性去重排序
-     * @param $flags
+    /**违禁词过滤
+     * @param $title
      */
-    public function setFlagsAttribute($flags)
+    public function setTitleAttribute($title)
     {
-        if (!empty($flags))
+        if (Storage::exists('guarded.txt'))
         {
-            $flags=array_unique(explode(',',$flags));
-            sort($flags);
-            $newflags='';
-            foreach ($flags as $flag)
+            $filtertitles=array_unique(array_filter(explode(PHP_EOL,Storage::get('guarded.txt'))));
+            foreach ($filtertitles as $filtertitle)
             {
-                $newflags.=$flag.',';
+                if (str_contains($title,str_replace([PHP_EOL,"\r"],'',$filtertitle)))
+                {
+                    exit($title.'为违禁词，不允许发布');
+                }
             }
-            $this->attributes['flags']=trim($newflags,',');
         }
-
+        $this->attributes['title']=$title;
     }
 
     /**图片默认缩略图定义
@@ -56,41 +56,20 @@ class Archive extends Model
      */
     public function getLitpicAttribute($litpic)
     {
-        return $litpic?$litpic:'/mobile/images/nopic.png';
+        return $litpic?$litpic:'/frontend/images/nopic.png';
     }
 
-    /**老路径转换
-     * @return string
-     */
-    public function url()
+    public function scopePublished($query)
     {
-        $url = '/';
-        if (is_null($this->oldtable)) {
-            $url = route('article', ['id' => $this->id]);
-        }
-        switch ($this->oldtable) {
-            case 'news':
-                $url = route('article_onews', ['oid' => $this->oldid]).'/';
-                break;
-            case 'cnews':
-                $url = route('article_cnews', ['oid' => $this->oldid]).'/';
-                break;
-            case 'tnews':
-                $url = route('article_tnews', ['oid' => $this->oldid]).'/';
-                break;
-        }
-        return $url;
+        $query->where('published_at','<=',Carbon::now());
     }
+
     /**Eloquent ORM 栏目关联定义
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function arctype()
     {
         return $this->belongsTo('App\AdminModel\Arctype','typeid');
-    }
-    public function brandarticle()
-    {
-        return $this->belongsTo('App\AdminModel\Brandarticle','brandid');
     }
 
     /**Eloquent ORM 评论关联定义

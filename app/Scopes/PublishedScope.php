@@ -15,6 +15,7 @@ class PublishedScope implements Scope
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
+     * @translator laravelacademy.org
      */
     public function apply(Builder $builder, Model $model)
     {

@@ -58,7 +58,7 @@ class InvestMentController extends Controller
      */
     public function postInvestMentEdit(Request $request,$id)
     {
-        InvestmentType::where('id',$id)->update(['type'=>$request->input('type'),'url'=>$request->input('url')]);
+        InvestmentType::where('id',$id)->update(['type'=>$request->input('type')]);
         return redirect(action('Admin\InvestMentController@InvestMentList'));
     }
 }

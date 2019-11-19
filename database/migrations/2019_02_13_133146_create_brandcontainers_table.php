@@ -15,17 +15,12 @@ class CreateBrandcontainersTable extends Migration
     {
         Schema::create('brandcontainers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('brand');
-            $table->string('type');
-            $table->integer('status');
-            $table->integer('num');
-            $table->string('url');
-            $table->string('referer');
-            $table->index('brand');
-            $table->index('type');
-            $table->index('status');
-            $table->index('num');
-            $table->index('url');
+            $table->string('brand')->index();
+            $table->string('type')->index();
+            $table->integer('status')->index();
+            $table->integer('num')->index();
+            $table->string('url')->index();
+            $table->string('referer')->index();
             $table->timestamps();
         });
     }

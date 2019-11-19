@@ -15,18 +15,13 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('archive_id');
-            $table->integer('user_id');
-            $table->integer('goodpost')->default(0);;
-            $table->integer('is_hidden')->default(0);
+            $table->integer('archive_id')->index();
+            $table->integer('user_id')->index();
+            $table->integer('goodpost')->default(0)->index();
+            $table->integer('is_hidden')->default(0)->index();
             $table->text('content')->nullable();
-            $table->ipAddress('ip');
+            $table->ipAddress('ip')->index();
             $table->timestamps();
-            $table->index('archive_id');
-            $table->index('user_id');
-            $table->index('goodpost');
-            $table->index('is_hidden');
-            $table->index('ip');
         });
     }
 

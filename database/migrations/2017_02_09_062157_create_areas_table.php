@@ -15,22 +15,9 @@ class CreateAreasTable extends Migration
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parentid');
-            $table->string('name');
-            $table->string('name_cn');
-            $table->integer('deep');
-            $table->string('id_path');
-            $table->string('name_path');
-            $table->integer('status');
-            $table->integer('sort');
-            $table->index('parentid');
-            $table->index('name');
-            $table->index('name_cn');
-            $table->index('deep');
-            $table->index('id_path');
-            $table->index('name_path');
-            $table->index('status');
-            $table->index('sort');
+            $table->integer('parentid')->index();
+            $table->string('regionname')->index();
+            $table->integer('type')->index();
             $table->timestamps();
 
         });

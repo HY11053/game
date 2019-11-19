@@ -2,11 +2,9 @@
 
 namespace App\Listeners;
 
-use App\AdminModel\Archive;
+use App\AdminModel\Acreagement;
 use App\AdminModel\Arctype;
-use App\AdminModel\Area;
 use App\AdminModel\Brandarticle;
-use App\AdminModel\InvestmentType;
 use App\Events\BrandArticleCacheCreateEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,7 +31,10 @@ class BrandArticleCacheCreateEventListener
     public function handle(BrandArticleCacheCreateEvent $event)
     {
         $id=$event->brandarticle->id;
-        if (Brandarticle::find($id))
+        if ($event->brandarticle->ismake==0){
+            Cache::forget('thisbrandarticleinfos_'.$id);
+        }
+        if (Brandarticle::find($id) && $event->brandarticle->ismake==1)
         {
             //清除当前缓存 重新写入 兼容Update
             Cache::forget('thisbrandarticleinfos_'.$id);
@@ -45,51 +46,50 @@ class BrandArticleCacheCreateEventListener
             $thisbrandtypeinfo=Cache::remember('thistypeinfos_'.$thisarticleinfos->typeid,  config('app.cachetime')+rand(60,60*24), function() use($thisarticleinfos){
                 return  Arctype::where('id',$thisarticleinfos->typeid)->first();
             });
-            //当前品牌所属父分类，请保持缓存名称和普通文档的所属品牌父分类缓存名称相同
-            $thisbrandtypecidinfo=Cache::remember('thistypeinfos_'.$thisbrandtypeinfo->reid,  config('app.cachetime')+rand(60,60*24), function() use($thisbrandtypeinfo){
-                return Arctype::where('id',$thisbrandtypeinfo->reid)->first();
+            Cache::forget('abrandlist'.$thisarticleinfos->typeid);
+            Cache::remember('abrandlist'.$thisarticleinfos->typeid, config('app.cachetime')+rand(60,60*24), function() use($thisarticleinfos){
+                return Brandarticle::where('mid','1')->where('typeid',$thisarticleinfos->typeid)->take(4)->orderBy('id','desc')->get();
             });
-            //清除当前缓存 重新写入 兼容Update
             Cache::forget('phb'.$thisarticleinfos->typeid);
-            //品牌分类排行榜 请保持缓存名称和普通文档所属品牌分类的排行榜缓存文件名称相同
-            Cache::remember('phb'.$thisarticleinfos->typeid,   config('app.cachetime')+rand(60,60*24), function() use($thisarticleinfos){
-                return Brandarticle::where('typeid',$thisarticleinfos->typeid)->take('10')->orderBy('click','desc')->get(['id','brandname','litpic','brandnum','tzid']);
-            });
-            Cache::forget('brandarticles'.$thisarticleinfos->id);
-            Cache::remember('brandarticles'.$thisarticleinfos->id,config('app.cachetime')+rand(60,60*24), function() use($thisarticleinfos){
-                $brandarticlekey=array_search($thisarticleinfos->id,Brandarticle::where('typeid',$thisarticleinfos->typeid)->orderBy('id','asc')->pluck('id')->toArray());
-                $brandarticles=Brandarticle::where('typeid',$thisarticleinfos->typeid)->skip($brandarticlekey*10)->take(12)->get(['id','brandname','created_at','litpic','brandpay','tzid']);
-                if (!count($brandarticles))
-                {
-                    $brandarticles=Brandarticle::where('typeid',$thisarticleinfos->typeid)->skip($brandarticlekey-10)->orderBy('id','asc')->take(12)->get(['id','brandname','created_at','litpic','brandpay','tzid']);
-                }
-                return $brandarticles;
+            Cache::remember('phb'.$thisarticleinfos->typeid, config('app.cachetime')+rand(60,60*24), function() use($thisarticleinfos){
+                return Brandarticle::where('typeid',$thisarticleinfos->typeid)->take('10')->orderBy('click','desc')->get(['id','brandname','litpic','brandnum','brandpay','description']);
+
             });
             Cache::forget('thisarticleinfos_latestbrands'.$thisarticleinfos->typeid);
             Cache::remember('thisarticleinfos_latestbrands'.$thisarticleinfos->typeid,  config('app.cachetime')+rand(60,60*24), function() use($thisarticleinfos){
-                return Brandarticle::where('typeid',$thisarticleinfos->typeid)->latest()->take(6)->orderBy('id','desc')->get(['id','brandname','tzid','litpic']);
+                return Brandarticle::where('typeid',$thisarticleinfos->typeid)->latest()->take(5)->orderBy('id','desc')->get(['id','brandname','brandpay','litpic','brandnum']);
             });
-            Cache::forget('newbrands');
-            Cache::remember('newbrands',  config('app.cachetime')+rand(60,60*24), function(){
-                return Brandarticle::latest()->take(6)->orderBy('id','desc')->get(['id','brandname']);
-            });
-            Cache::forget('brandarticles');
-            Cache::remember('brandarticles',config('app.cachetime')+rand(60,60*24), function() {
-                return Brandarticle::take(12)->orderBy('click','desc')->get(['id','brandname','created_at','litpic','brandpay']);
+
+            Cache::forget('abrandlist'.$thisarticleinfos->typeid);
+            Cache::remember('abrandlist'.$thisarticleinfos->typeid, config('app.cachetime')+rand(60,60*24), function(){
+                return Brandarticle::where('mid','1')->take(4)->orderBy('id','desc')->get();
             });
             Cache::forget('phb');
-            Cache::remember('phb', config('app.cachetime')+rand(60,60*24), function() {
-                return   Brandarticle::take('10')->orderBy('click','desc')->get(['id','brandname','litpic','brandnum','tzid']);
+            Cache::remember('phb', config('app.cachetime')+rand(60,60*24), function(){
+                return Brandarticle::take('10')->orderBy('click','desc')->get(['id','brandname','litpic','brandnum','brandpay','description']);
             });
             Cache::forget('latestbrands');
-            Cache::remember('latestbrands', config('app.cachetime')+rand(60,60*24), function(){
-                return   Brandarticle::latest()->take(6)->orderBy('id','desc')->get(['id','brandname','tzid','litpic']);
+            Cache::remember('latestbrands',  config('app.cachetime')+rand(60,60*24), function(){
+                return Brandarticle::latest()->take(5)->orderBy('id','desc')->get(['id','brandname','brandpay','litpic','brandnum']);
             });
-            Cache::forget('list_latestbrands');
-            Cache::remember('list_latestbrands',  config('app.cachetime')+rand(60,60*24), function() {
-                $latestbrands=Brandarticle::latest()->take(10)->orderBy('id','desc')->get(['id','brandname','tzid','litpic']);
-                return $latestbrands;
+            //店铺面积缓存
+            Cache::remember('acreagements',  config('app.cachetime')+rand(60,60*24), function(){
+                return Acreagement::pluck('type','id');
             });
+            Cache::forget('abrandlist');
+            Cache::remember('abrandlist', config('app.cachetime')+60*24*365, function(){
+                return Brandarticle::where('mid','1')->where('flags','like','%'.'a'.'%')->take(4)->orderBy('id','desc')->get();
+            });
+            Cache::forget('topbrandnavs');
+            Cache::remember('topbrandnavs', config('app.cachetime')+60*24*365, function() {
+                return Arctype::where('mid',1)->where('reid','<>',0)->orderBy('sortrank','asc')->get(['real_path','typename']);
+            });
+            Cache::forget('topbrandnavs');
+            Cache::remember('flashlingshibrands', config('app.cachetime')+rand(60,60*24), function() {
+                return Brandarticle::where('mid','1')->where('flags','like','%'.'h'.'%')->take(7)->orderBy('id','desc')->get();
+            });
+
         }
+
     }
 }

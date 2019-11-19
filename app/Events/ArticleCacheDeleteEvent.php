@@ -25,6 +25,7 @@ class ArticleCacheDeleteEvent
         $this->archive=$archive;
     }
 
+
     /**
      * Get the channels the event should broadcast on.
      *

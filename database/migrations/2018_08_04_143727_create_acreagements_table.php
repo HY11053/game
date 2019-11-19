@@ -15,9 +15,8 @@ class CreateAcreagementsTable extends Migration
     {
         Schema::create('acreagements', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type');
+            $table->string('type')->index();
             $table->timestamps();
-            $table->index('type');
         });
     }
 

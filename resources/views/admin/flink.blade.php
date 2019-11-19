@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">友情链接列表 总计{{$links->total()}}</h3>
+                    <h3 class="box-title">友情链接列表</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">

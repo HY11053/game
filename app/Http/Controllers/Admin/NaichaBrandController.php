@@ -34,7 +34,7 @@ class NaichaBrandController extends Controller
         {
             if(!empty($brand) && empty(Brandcontainer::where('brand',$brand)->value('brand')))
             {
-                Brandcontainer::create(['brand'=>$brand,'type'=>$request->input('type'),'num'=>1]);
+                Brandcontainer::create(['brand'=>$brand,'type'=>$request->input('type'),'num'=>1,'status'=>3]);
             }else{
                 Brandcontainer::where('brand',Brandcontainer::where('brand',$brand)->value('brand'))->update(['num'=>Brandcontainer::where('brand',$brand)->value('num')+1]);
             }
@@ -42,25 +42,7 @@ class NaichaBrandController extends Controller
         return redirect(action('Admin\NaichaBrandController@brandListsView'));
     }
 
-    /**
-     * 品牌导入
-     */
-    public function importBrands()
-    {
-        $contents = Storage::get('zhaji.txt');
-        $brands = explode(PHP_EOL,$contents);
-        foreach ($brands as $brand)
-        {
-            if(!empty($brand) && empty(Brandcontainer::where('brand',$brand)->value('brand')))
-            {
-                Brandcontainer::create(['brand'=>$brand,'type'=>'jipai','num'=>1]);
-                //dd(BrandDatas::where('brands','like','%'.$arr.'%')->value('brands'));
-            }else{
-                Brandcontainer::where('brand',Brandcontainer::where('brand',$brand)->value('brand'))->update(['num'=>Brandcontainer::where('brand',$brand)->value('num')+1]);
-            }
-        }
-        echo 'SUCCESS';
-    }
+
 
     /**品牌视图
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -72,10 +54,9 @@ class NaichaBrandController extends Controller
         $brandtypes=BrandType::pluck('brandname','brandtype');
         $datas=Brandcontainer::when($request->input('type'), function ($query) use ($request) {
             return $query->where('type', $request->input('type'));
-        })->when($request->input('status'), function ($query) use ($request) {
-            $status=$request->input('status');
-            return $query->where('status', $status);
-        })->orderBy('num','desc')->paginate(50);
+        })->when($request->input('status') , function ($query) use ($request) {
+            return $query->where('status', $request->input('status'));
+        })->orderBy('id','asc')->paginate(50);
         return view('admin.brands',compact('datas','arguments','brandtypes'));
     }
 
