@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <meta name="renderer" content="webkit">
-    <title>中岚签证</title>
-    <meta name="keywords" content="美国签证 加急 预约 面谈 代办">
+    <title>极速云游戏盾防护系统</title>
+    <meta name="keywords" content="极速云游戏盾防护系统">
     <link href="/frontend/css/bootstrap.min.css" rel="stylesheet">
     <link href="/frontend/css/css.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -38,8 +38,8 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li  class="active"><a href="http://www.clantrip.com">首页 <span class="sr-only">(current)</span></a><p class="line-top hidden-xs"></p></li>
-                    <li ><a href="http://www.clantrip.com/index.php?m=content&c=index&a=lists&catid=6">签证指南</a></li>
-                    <li ><a href="http://www.clantrip.com/index.php?m=content&c=index&a=lists&catid=13">签证加急</a></li>
+                    <li ><a href="http://www.clantrip.com/index.php?m=content&c=index&a=lists&catid=6">http(s)代理</a></li>
+                    <li ><a href="http://www.clantrip.com/index.php?m=content&c=index&a=lists&catid=13">socket代理</a></li>
                     <li ><a href="http://www.clantrip.com/index.php?m=content&c=index&a=lists&catid=9">签证服务</a></li>
                     <li ><a href="http://www.clantrip.com/index.php?m=content&c=index&a=lists&catid=10">签证资讯</a></li>
                     <li ><a href="http://www.clantrip.com/index.php?m=content&c=index&a=lists&catid=14">资料下载</a></li>
@@ -77,8 +77,8 @@
 <div class="main">
     <div class="item item2" style="padding-bottom:0">
         <div class="item2-tit">
-            <h3 class="m-tit">墨者高防游戏盾  为您解决流量攻击难题</h3>
-            <p class="s-tit">已成功为100+棋牌游戏公司提供防护服务</p>
+            <h3 class="m-tit">游戏防御专用调度清洗引擎，最大程度保障游戏的高可用性</h3>
+            <p class="s-tit">低延时体验，免SDK快速接入，5分钟即可完成接入</p>
         </div>
         <div class="item-content item2-content">
             <ul class="clear">
@@ -87,8 +87,8 @@
                         <img src="/frontend/images/ddos.png">
                     </div>
                     <div class="info-r fr">
-                        <p>抗DDoS攻击</p>
-                        <span>防护海量DDoS攻击，有效抵御所有各类基于网络层、传输层及应用层的DDoS攻击，如syn flood、UDP flood、ICMP flood等攻击。</span>
+                        <p>专用清洗引擎</p>
+                        <span>针对游戏的玩法、受攻击场景，专门研发了游戏防御专用调度清洗引擎，最大程度保障游戏的高可用性、低延时体验</span>
                     </div>
                 </li>
                 <li class="clear">
@@ -96,8 +96,8 @@
                         <img src="/frontend/images/cc.png">
                     </div>
                     <div class="info-r fr">
-                        <p>无视CC攻击</p>
-                        <span>自研WAF指纹识别架构，专业防御CC，通过在用户业务和攻击者之间建立起一道游戏业务的防火墙，根据攻击者的TCP连接行为、游戏连接后的动态信息，准确分辨出真正的玩家和黑客，直接拦截异常的客户端。</span>
+                        <p>支持快速集群扩容</p>
+                        <span>本服务已全面集成运营商路由黑洞，节点多活，自动发现并封堵攻击流量，当攻击强度、游戏同时在线人数扩大时，可自动扩容服务与防御能力</span>
                     </div>
                 </li>
                 <li class="clear" style="margin-bottom:0">
@@ -105,8 +105,8 @@
                         <img src="/frontend/images/cdn.png">
                     </div>
                     <div class="info-r fr">
-                        <p>游戏CDN加速</p>
-                        <span>智能多线节点分布，优质骨干网接入，支持电信、联通、移动、教育网等8线独家防御，有效解决访问延迟、网络卡慢等问题。</span>
+                        <p>免SDK快速接入</p>
+                        <span>防御接入与游戏APP安装操作系统无关，免SDK，5分钟即可完成接入。可与游戏服务器通过加密渠道传输玩家IP，保持接入防御前后的功能体验一致性。</span>
                     </div>
                 </li>
                 <li class="clear" style="margin-bottom:0">
@@ -114,8 +114,8 @@
                         <img src="/frontend/images/rz.png">
                     </div>
                     <div class="info-r fr">
-                        <p>海量日志储存</p>
-                        <span>海量日志数据分析，提供用户数据支撑。</span>
+                        <p>支持多种协议</p>
+                        <span>支持各种基于非HTTP请求的通信协议业务，如TCP长链接等，接入前后链接保持，无需重建链接，隐藏游戏服务器真实IP地址</span>
                     </div>
                 </li>
             </ul>
@@ -242,25 +242,22 @@
                     </div>
                     <div class="advantage-item-desc">
                         <div class="desc-strong">
-                            1秒
+                            免SDK快速接入
                         </div>
                         <div class="desc">
-                            检测恶意流量
+                            防御接入与游戏APP安装操作系统无关
                         </div>
                         <div class="desc-strong">
-                            3秒
+                            5分钟
                         </div>
                         <div class="desc">
-                            清洗恶意流量
+                            即可完成接入
                         </div>
                         <div class="desc-strong">
-                            5秒
+                            加密渠道传输玩家IP
                         </div>
                         <div class="desc">
-                            AI-Engine智慧防御
-                        </div>
-                        <div class="desc">
-                            自动生成攻击防御策略
+                            保持接入防御前后的功能体验一致性
                         </div>
                     </div>
                 </div>
@@ -288,7 +285,7 @@
                             365天
                         </div>
                         <div class="desc">
-                            SoC专家团队随时待命
+                            专业团队快速定位异常
                         </div>
                     </div>
                 </div>
@@ -348,23 +345,25 @@
                 </div>
                 <div class="animate-info fr">
                     <p>
-                        高防清洗中心
+                        专用智能清洗引擎
                     </p>
                     <span>
-                    通过修改DNS域名解析，高防IP将替代源站服务器IP对外提供在线互联网业务，所有业务流量都将牵引至高防IP上进行清洗，干净流量回注给源站服务器。源站服务器始终隐藏在DDoS高防后面，攻击者无法直接对源站服务器发起DDoS攻击，无法影响互联网在线业务的可用性。
+                    DDOS防御无上限，不管多少G  ,CC零误封，不管多少肉鸡。研发的新SocKet协议，弥补了WinSock链接失败会断开的问题，链接失败自动无缝切换。智能多线节点分布，配合独家研发的隧道填补技术，保证每一条线路都是优质的网络。所有提供的单线防护节点，均具备运营商级别的UDP封禁能力，UDP攻击流量不计入攻击流量。流量、SDK调用、DDoS攻击、CC攻击等多维度数据统计分析，快速定位异常，助力业务发展。
+
+
                 </span>
                     <ul class="list-item clear">
                         <li>
-                            <i class="icon icon-24 icon13"></i> T级超大流量清洗
+                            <i class="icon icon-24 icon13"></i> 任何tcp端类应用
                         </li>
                         <li>
-                            <i class="icon icon-24 icon13"></i> 自定义监控告警
+                            <i class="icon icon-24 icon13"></i> 智能开放端口
                         </li>
                         <li>
-                            <i class="icon icon-24 icon13"></i> 百万QPS  CC防护
+                            <i class="icon icon-24 icon13"></i> 登陆器列表保护
                         </li>
                         <li>
-                            <i class="icon icon-24 icon13"></i> 多维度攻击报表
+                            <i class="icon icon-24 icon13"></i> 数据报表
                         </li>
                     </ul>
                 </div>
@@ -374,7 +373,7 @@
 
     <div class="chanye">
         <a name="01"></a>
-        <h1>项目选择</h1>
+        <h1>套餐选择</h1>
         <h2>PROJECT  SELECTION</h2>
         <ul class="xiangmu clearfix">
             <li class="lio">

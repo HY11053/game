@@ -77,10 +77,10 @@ return [
     | Site home page key words and description and record information
     | and other related settings
     */
-    'webname'=>'',
-    'indexname'=>'',
-    'keywords'=>'',
-    'description'=>'',
+    'webname'=>'极速云游戏盾防护系统-分布式DDoS安全云防御体系',
+    'indexname'=>'极速云游戏盾防护',
+    'keywords'=>'游戏盾,游戏盾防护,游戏防护盾',
+    'description'=>'极速云游戏盾防护系统针对游戏的玩法、受攻击场景，专门研发了游戏防御专用调度清洗引擎，最大程度保障游戏的高可用性、低延时体验，免SDK快速接入，5分钟即可完成接入。可与游戏服务器通过加密渠道传输玩家IP，保持接入防御前后的功能体验一致性',
     'api'=>'',
     'mip_api'=>'',
     'mip_history'=>'',
